@@ -1,2 +1,11 @@
-\section{Prova}
-Prova
+Questa relazione presenta il lavoro svolto durante il tirocinio presso l'azienda \textit{RESI Informatica}, con l'obiettivo di sviluppare un modulo per la gestione
+dei conti e dei relativi listini prezzi per un'applicazione multi-tenant. Il modulo \`e composto da una parte Back-end scritta in \textit{Java} con \textit{SpringBoot}, e da una parte Front-end realizzata con \textit{Angular}.
+
+L'applicazione prevede un Wallet associato a ogni tenant che pu\`o essere ricaricato pagando con \textit{Stripe}.
+Il back-end resta in ascolto su una coda del message broker \textit{RabbitMQ}, sulla quale vengono inviati messaggi relativi ai costi sostenuti durante l'esecuzione delle operazioni all'interno di un workflow.
+Per ognuna di queste operazioni viene scalato un determinato importo, che dipende dal listino prezzi associato al tenant.
+Come DMBS \`e stato scelto \textit{PostgreSQL} per la sua affidabilit\`a e scalabilit\`a.
+
+Dal lato Front-end, \`e prevista una pagina per la gestione del Wallet dove \`e possibile effettuare ricariche e visualizzare lo storico delle operazioni.
+\`e inoltre presente una sezione per la creazione e modifica dei listini prezzi.
+L'applicazione viene containerizzata con \textit{Docker} ed eseguita, insieme agli altri servizi dell'applicazione, utilizzando \textit{Kubernetes}.
