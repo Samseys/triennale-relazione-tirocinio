@@ -13,7 +13,7 @@ Il tirocinio è stato completato come parte del percorso di Laurea Triennale in 
   ```
 
 - Scarica l'eseguibile di tectonic utilizzando questi comandi
-  da PowerShell
+  da PowerShell:
 
       ```
       [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
@@ -21,16 +21,16 @@ Il tirocinio è stato completato come parte del percorso di Laurea Triennale in 
       iex ((New-Object System.Net.WebClient).DownloadString('https://drop-ps1.fullyjustified.net'))
       ```
 
-- Scarica l'ultima versione di tex-fmt
+- Scarica l'ultima versione di tex-fmt:
 
   ```
   https://github.com/WGUNDERWOOD/tex-fmt/releases/
   ```
 
-- Infine, scarica la versione di biber corrispondente alla versione di biblatex utilizzata (in questo momento, tectonic installa la versione 2.17)
+- Infine, scarica la versione di biber corrispondente alla versione di biblatex utilizzata (in questo momento, tectonic installa la versione 2.17):
 
   ```
   https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.17/binaries/Windows/biber-MSWIN64.zip/download
   ```
 
-Aggiungi la cartella creata inizialmente al PATH
+- Aggiungi la cartella creata inizialmente al PATH.
