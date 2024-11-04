@@ -15,11 +15,11 @@ Il tirocinio è stato completato come parte del percorso di Laurea Triennale in 
 - Scarica l'eseguibile di tectonic utilizzando questi comandi
   da PowerShell:
 
-      ```
-      [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+  ```
+  [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
 
-      iex ((New-Object System.Net.WebClient).DownloadString('https://drop-ps1.fullyjustified.net'))
-      ```
+  iex ((New-Object System.Net.WebClient).DownloadString('https://drop-ps1.fullyjustified.net'))
+  ```
 
 - Scarica l'ultima versione di tex-fmt:
 
