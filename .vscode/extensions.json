@@ -1,3 +1,7 @@
 {
-  "recommendations": ["James-Yu.latex-workshop", "Gruntfuggly.todo-tree"]
+  "recommendations": [
+    "James-Yu.latex-workshop",
+    "Gruntfuggly.todo-tree",
+    "streetsidesoftware.code-spell-checker-italian"
+  ]
 }
