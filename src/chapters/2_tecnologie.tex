@@ -10,7 +10,7 @@ e i \textit{consumers} (destinatari) consumano questi messaggi eseguendo operazi
 Rabbit in particolare utilizza gli \textit{exchange}, un punto intermedio tra i producer e le queues.
 L'exchange riceve i messaggi dei producers e li instrada confrontando la \textit{routing key} del messaggio con determinate regole dette \textit{bindings}.\\\\
 %
-Utilizzare un software del genere ha diversi vantaggi, tra cui:\
+Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui fa parte, altri per via delle sue caratteristiche specifiche:\
 \begin{itemize}
   \item \textbf{Scalabilit\`a} -  Il carico di lavoro viene distribuito automaticamente tra i consumer, e finch\'e i messaggi
     non vengono processati questi rimangono in coda.
@@ -33,7 +33,7 @@ Utilizzare un software del genere ha diversi vantaggi, tra cui:\
         che riceve messaggi con header ``format=pdf''
     \end{enumerate}
     \vbox{
-    \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a diversi meccanismi:
+    \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a  molteplici meccanismi:
       \begin{enumerate}
         \item
           \textit{Acknowledgements} -  Una conferma da parte del consumer che tutto sia andato a buon fine.
@@ -44,7 +44,7 @@ Utilizzare un software del genere ha diversi vantaggi, tra cui:\
         \item \textit{DLX (Dead-letter Exchange)} - Sono normali exchange su cui vengono inviati i messaggi \textit{``dead-lettered''}: messaggi che hanno
           ricevuto un nack (\textit{negative acknowledgement}), messaggi che hanno superato il TTL definito per messaggio, messaggi
           scartati perch\`e la queue ha superato uno dei limiti imposti, o messaggi che hanno superato il numero massimo di re-try consentito dalla coda.
-        \item \textit{Persistenza dei messaggi} -  Rabbit offre la possibilit\`a di rendere i messaggi persistenti sul disco,
+        \item \textit{Persistenza dei messaggi} -  \`e possibile persistere i messaggi presenti nelle queue sul disco,
           che significa che questi non vengono persi al riavvio o al crash del server. La persistenza pu\`o essere attivata sia sulle code che sui singoli messaggi.
           Il contro della persistenza \`e che aumenta la latenza, ma offre ovviamente una maggiore affidabilit\`a.
       \end{enumerate}
