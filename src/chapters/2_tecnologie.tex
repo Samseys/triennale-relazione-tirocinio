@@ -12,26 +12,26 @@ L'exchange riceve i messaggi dei producers e li instrada confrontando la \textit
 %
 Utilizzare un software del genere ha diversi vantaggi, tra cui:\
 \begin{itemize}
-  \item \textbf{Flessibilit\`a nel routing dei messaggi} - Rabbit offre molteplici possibilit\`a di configurare gli exchange a seconda delle esigenze:
+  \item \textbf{Scalabilit\`a} -  Il carico di lavoro viene distribuito automaticamente tra i consumer, e finch\'e i messaggi
+    non vengono processati questi rimangono in coda.
+  \item \textbf{Flessibilit\`a nel routing dei messaggi} - Rabbit offre molteplici modi di configurare gli exchange a seconda delle esigenze:
     \begin{enumerate}
       \item \textit{Direct Exchange} - Invio dei messaggi a code specifiche in base a una routing key
         \begin{figure}[H]
           \centering
           \includegraphics[width=5cm]{images/rabbitmq-direct-exchange.png}
-          \caption{Esempio di Direct Exchange}
+          \caption{Esempio di Direct Exchange\cite{rabbitmq}}
         \end{figure}
       \item \textit{Fanout Exchange} - Invio su tutte le code appartenenti all'exchange, utile per il broadcasting
-      \item \textit{Topic Exchange} - Permette di instradare i messaggi con routing key basate su pattern pi\`u o meno complessi
+      \item \textit{Topic Exchange} - Permette di instradare i messaggi facendo il match delle routing key con binding basati su pattern pi\`u o meno complessi
         \begin{figure}[H]
           \centering
           \includegraphics[width=7cm]{images/rabbitmq-topic-exchange.png}
-          \caption{Esempio di Topic Exchange}
+          \caption{Esempio di Topic Exchange\cite{rabbitmq}}
         \end{figure}
       \item \textit{Header Exchange} - Utile per instradare i messaggi in base a molteplici argomenti, per esempio \`e possibile creare una coda
         che riceve messaggi con header ``format=pdf''
     \end{enumerate}
-  \item \textbf{Scalabilit\`a} -  Il carico di lavoro viene distribuito automaticamente tra i consumer, e finch\'e i messaggi
-    non vengono processati questi rimangono in coda.
     \vbox{
     \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a diversi meccanismi:
       \begin{enumerate}
