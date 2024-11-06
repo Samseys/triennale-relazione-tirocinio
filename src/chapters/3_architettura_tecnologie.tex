@@ -32,23 +32,21 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
       \item \textit{Header Exchange} - Utile per instradare i messaggi in base a molteplici argomenti, per esempio \`e possibile creare una coda
         che riceve messaggi con header ``format=pdf''
     \end{enumerate}
-    \vbox{
-    \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a  molteplici meccanismi:
-      \begin{enumerate}
-        \item
-          \textit{Acknowledgements} -  Una conferma da parte del consumer che tutto sia andato a buon fine.
-          Se il consumer non invia l'ack, Rabbit terr\`a il messaggio all'interno della coda o lo invier\`a ad un altro consumer.
-        \item \textit{TTL (Time-to-Live) per messaggi e code} - \`E possibile impostare un limite di tempo che un messaggio pu\`o rimanere
-          in una queue, dopo il quale vengono automaticamente scartati o vengono spostati su un DLX, riducendo il rischio che si
-          possano accumulare messaggi causando problemi di risorse esaurite o code sovraccariche.
-        \item \textit{DLX (Dead-letter Exchange)} - Sono normali exchange su cui vengono inviati i messaggi \textit{``dead-lettered''}: messaggi che hanno
-          ricevuto un nack (\textit{negative acknowledgement}), messaggi che hanno superato il TTL definito per messaggio, messaggi
-          scartati perch\`e la queue ha superato uno dei limiti imposti, o messaggi che hanno superato il numero massimo di re-try consentito dalla coda.
-        \item \textit{Persistenza dei messaggi} -  \`e possibile persistere i messaggi presenti nelle queue sul disco,
-          che significa che questi non vengono persi al riavvio o al crash del server. La persistenza pu\`o essere attivata sia sulle code che sui singoli messaggi.
-          Il contro della persistenza \`e che aumenta la latenza, ma offre ovviamente una maggiore affidabilit\`a.
-      \end{enumerate}
-    }
+  \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a  molteplici meccanismi:
+    \begin{enumerate}
+      \item
+        \textit{Acknowledgements} -  Una conferma da parte del consumer che tutto sia andato a buon fine.
+        Se il consumer non invia l'ack, Rabbit terr\`a il messaggio all'interno della coda o lo invier\`a ad un altro consumer.
+      \item \textit{TTL (Time-to-Live) per messaggi e code} - \`E possibile impostare un limite di tempo che un messaggio pu\`o rimanere
+        in una queue, dopo il quale vengono automaticamente scartati o vengono spostati su un DLX, riducendo il rischio che si
+        possano accumulare messaggi causando problemi di risorse esaurite o code sovraccariche.
+      \item \textit{DLX (Dead-letter Exchange)} - Sono normali exchange su cui vengono inviati i messaggi \textit{``dead-lettered''}: messaggi che hanno
+        ricevuto un nack (\textit{negative acknowledgement}), messaggi che hanno superato il TTL definito per messaggio, messaggi
+        scartati perch\`e la queue ha superato uno dei limiti imposti, o messaggi che hanno superato il numero massimo di re-try consentito dalla coda.
+      \item \textit{Persistenza dei messaggi} -  \`e possibile persistere i messaggi presenti nelle queue sul disco,
+        che significa che questi non vengono persi al riavvio o al crash del server. La persistenza pu\`o essere attivata sia sulle code che sui singoli messaggi.
+        Il contro della persistenza \`e che aumenta la latenza, ma offre ovviamente una maggiore affidabilit\`a.
+    \end{enumerate}
 \end{itemize}
 
 \section{PostgreSQL}
