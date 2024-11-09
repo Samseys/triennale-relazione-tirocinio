@@ -7,12 +7,12 @@ L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati 
 Rabbit \`e un message broker, cio\`e, un software che consente la comunicazione asincrona tra programmi.
 Funziona attraverso \textit{queues} (code) su cui i \textit{producers} (mittenti) inviano messaggi definiti a priori,
 e i \textit{consumers} (destinatari) consumano questi messaggi eseguendo operazioni in base al loro contenuto.
-Rabbit in particolare utilizza gli \textit{exchange}, un punto intermedio tra i producer e le queues.
+Rabbit in particolare utilizza gli \textit{exchange}, un punto intermedio tra i producers e le queues.
 L'exchange riceve i messaggi dei producers e li instrada confrontando la \textit{routing key} del messaggio con determinate regole dette \textit{bindings}.\\\\
 %
 Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui fa parte, altri per via delle sue caratteristiche specifiche:\
 \begin{itemize}
-  \item \textbf{Scalabilit\`a} -  Il carico di lavoro viene distribuito automaticamente tra i consumer, e finch\'e i messaggi
+  \item \textbf{Scalabilit\`a} -  Il carico di lavoro viene distribuito automaticamente tra i consumers, e finch\'e i messaggi
     non vengono processati questi rimangono in coda.
   \item \textbf{Flessibilit\`a nel routing dei messaggi} - Rabbit offre molteplici modi di configurare gli exchange a seconda delle esigenze:
     \begin{enumerate}
@@ -30,7 +30,7 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
           \caption{Esempio di Topic Exchange\cite{rabbitmq}}
         \end{figure}
       \item \textit{Header Exchange} - Utile per instradare i messaggi in base a molteplici argomenti, per esempio \`e possibile creare una coda
-        che riceve messaggi con header ``format=pdf''
+        che riceve solo messaggi con header ``format=pdf''
     \end{enumerate}
   \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a  molteplici meccanismi:
     \begin{enumerate}
@@ -43,22 +43,54 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
       \item \textit{DLX (Dead-letter Exchange)} - Sono normali exchange su cui vengono inviati i messaggi \textit{``dead-lettered''}: messaggi che hanno
         ricevuto un nack (\textit{negative acknowledgement}), messaggi che hanno superato il TTL definito per messaggio, messaggi
         scartati perch\`e la queue ha superato uno dei limiti imposti, o messaggi che hanno superato il numero massimo di re-try consentito dalla coda.
-      \item \textit{Persistenza dei messaggi} -  \`e possibile persistere i messaggi presenti nelle queue sul disco,
-        che significa che questi non vengono persi al riavvio o al crash del server. La persistenza pu\`o essere attivata sia sulle code che sui singoli messaggi.
+      \item \textit{Persistenza dei messaggi} -  \`E possibile persistere i messaggi presenti nelle queue sul disco,
+        cio\`e non vengono persi al riavvio o al crash del server. La persistenza pu\`o essere attivata sia sulle code che sui singoli messaggi.
         Il contro della persistenza \`e che aumenta la latenza, ma offre ovviamente una maggiore affidabilit\`a.
     \end{enumerate}
 \end{itemize}
 
 \section{PostgreSQL}
-Placeholder
+La scelta di PostgreSQL deriva dalla completezza delle funzionalit\`a che offre, che lo rendono un'opzione desiderabile per applicazioni aziendali.
+Di seguito alcune delle caratteristiche che lo contraddistinguono:
+
+\begin{itemize}
+  \item \textit{Elevate prestazioni} - \`E un database relazionale molto performante in grado di supportare decine di migliaia di operazioni al secondo sul giusto hardware,
+    e offre una latenza minore rispetto a DBMS concorrenti come \textit{MySQL} in molte operazioni.\cite{salunke2024performance}
+  \item \textit{Robustezza} - Postgres supporta molte funzioni di sicurezza, come autenticazione SSL, o configurazione dei permessi granulare fino al
+    livello di colonne e righe.
+    \`E completamente conforme ai requisiti \textit{ACID} (Atomicity, Consistency, Integrity, Durability).
+    Per assicurare le propriet\`a ACID, PostgreSQL utilizza metodologie come MVCC (Multi-Version Concurrency Control) e WAL (Write-Ahead Logging).
+  \item \textit{Scalabilit\`a} - Ha ottime capacit\`a di scalabilit\`a verticale, che si traduce nell'utilizzo di tutti i core,
+    di tutta la RAM o di maggiore velocit\`a di lettura/scrittura dei dischi.
+    Supporta inoltre il clustering e la replication, e ha quindi anche capacit\`a di scalabilit\`a orizzontale.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=15cm]{images/postgres-replication.png}
+      \caption{Esempio di replica\cite{postgreshighavail}}
+    \end{figure}
+  \item \textit{Supporto per transazioni complesse} - Postgres supporta la scrittura di transazioni complesse e funzioni procedurali attraverso un linguaggio chiamato
+    \textit{PL/pgSQL}, che permette di creare logiche pi\`u avanzate.
+\end{itemize}
+
 \section{Java}
 Placeholder
 \subsection {SpringBoot}
 Placeholder
 \section{Angular}
-Placeholder
+Angular \`e uno dei framework JavaScript pi\`u popolari,
 \section{Stripe}
-Placeholder
+Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transazioni elettroniche.
+\\\\
+%Stripe implementa in maniera trasparente tutti gli accorgimenti necessari per garantire sicurezza e accuratezza, tra cui:
+
+\begin{itemize}
+  \item \textit{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
+    A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
+  \item \textit{Sicurezza} -
+  \item \textit{Scalabilit\`a} -
+  \item \textit{Supporto a molti metodi di pagamento} -
+  \item \textit{Documentazione estensiva} -
+\end{itemize}
 \section{Docker}
 Placeholder
 \subsection{Kubernetes}
