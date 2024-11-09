@@ -1,9 +1,10 @@
+\section{Architettura Event-driven}
+
+\section{Tecnologie e servizi utilizzati}
+
 L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati in ambiente aziendale:
 
-\section{RabbitMQ}
-% Link utili
-% https://www.ibm.com/it-it/topics/message-brokers
-%
+\subsection{RabbitMQ}
 Rabbit \`e un message broker, cio\`e, un software che consente la comunicazione asincrona tra programmi.
 Funziona attraverso \textit{queues} (code) su cui i \textit{producers} (mittenti) inviano messaggi definiti a priori,
 e i \textit{consumers} (destinatari) consumano questi messaggi eseguendo operazioni in base al loro contenuto.
@@ -16,21 +17,21 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
     non vengono processati questi rimangono in coda.
   \item \textbf{Flessibilit\`a nel routing dei messaggi} - Rabbit offre molteplici modi di configurare gli exchange a seconda delle esigenze:
     \begin{enumerate}
-      \item \textit{Direct Exchange} - Invio dei messaggi a code specifiche in base a una routing key
+      \item \textit{Direct Exchange} - Invio dei messaggi a code specifiche in base a una routing key.
         \begin{figure}[H]
           \centering
           \includegraphics[width=5cm]{images/rabbitmq-direct-exchange.png}
           \caption{Esempio di Direct Exchange\cite{rabbitmq}}
         \end{figure}
-      \item \textit{Fanout Exchange} - Invio su tutte le code appartenenti all'exchange, utile per il broadcasting
-      \item \textit{Topic Exchange} - Permette di instradare i messaggi facendo il match delle routing key con binding basati su pattern pi\`u o meno complessi
+      \item \textit{Fanout Exchange} - Invio su tutte le code appartenenti all'exchange, utile per il broadcasting.
+      \item \textit{Topic Exchange} - Permette di instradare i messaggi facendo il match delle routing key con binding basati su pattern pi\`u o meno complessi.
         \begin{figure}[H]
           \centering
           \includegraphics[width=7cm]{images/rabbitmq-topic-exchange.png}
           \caption{Esempio di Topic Exchange\cite{rabbitmq}}
         \end{figure}
       \item \textit{Header Exchange} - Utile per instradare i messaggi in base a molteplici argomenti, per esempio \`e possibile creare una coda
-        che riceve solo messaggi con header ``format=pdf''
+        che riceve solo messaggi con header ``format=pdf''.
     \end{enumerate}
   \item \textbf{Affidabilit\`a} -  Rabbit \`e in grado di offrire un elevato grado di affidabilit\`a grazie a  molteplici meccanismi:
     \begin{enumerate}
@@ -49,7 +50,7 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
     \end{enumerate}
 \end{itemize}
 
-\section{PostgreSQL}
+\subsection{PostgreSQL}
 La scelta di PostgreSQL deriva dalla completezza delle funzionalit\`a che offre, che lo rendono un'opzione desiderabile per applicazioni aziendali.
 Di seguito alcune delle caratteristiche che lo contraddistinguono:
 
@@ -58,8 +59,8 @@ Di seguito alcune delle caratteristiche che lo contraddistinguono:
     e offre una latenza minore rispetto a DBMS concorrenti come \textit{MySQL} in molte operazioni.\cite{salunke2024performance}
   \item \textit{Robustezza} - Postgres supporta molte funzioni di sicurezza, come autenticazione SSL, o configurazione dei permessi granulare fino al
     livello di colonne e righe.
-    \`E completamente conforme ai requisiti \textit{ACID} (Atomicity, Consistency, Integrity, Durability).
-    Per assicurare le propriet\`a ACID, PostgreSQL utilizza metodologie come MVCC (Multi-Version Concurrency Control) e WAL (Write-Ahead Logging).
+    \`E inoltre completamente conforme ai requisiti \textit{ACID} (Atomicity, Consistency, Integrity, Durability).
+    Per assicurare queste propriet\`a, PostgreSQL utilizza metodologie come MVCC (Multi-Version Concurrency Control) e WAL (Write-Ahead Logging).
   \item \textit{Scalabilit\`a} - Ha ottime capacit\`a di scalabilit\`a verticale, che si traduce nell'utilizzo di tutti i core,
     di tutta la RAM o di maggiore velocit\`a di lettura/scrittura dei dischi.
     Supporta inoltre il clustering e la replication, e ha quindi anche capacit\`a di scalabilit\`a orizzontale.
@@ -72,26 +73,43 @@ Di seguito alcune delle caratteristiche che lo contraddistinguono:
     \textit{PL/pgSQL}, che permette di creare logiche pi\`u avanzate.
 \end{itemize}
 
-\section{Java}
+\subsection{Java}
 Placeholder
 \subsection {SpringBoot}
 Placeholder
-\section{Angular}
-Angular \`e uno dei framework JavaScript pi\`u popolari,
-\section{Stripe}
+\subsection{Angular}
+Placeholder
+%Angular \`e uno dei framework JavaScript pi\`u popolari,
+\subsection{Stripe}
 Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transazioni elettroniche.
-\\\\
-%Stripe implementa in maniera trasparente tutti gli accorgimenti necessari per garantire sicurezza e accuratezza, tra cui:
-
+%TODO Scrivere un'introduzione decente
 \begin{itemize}
   \item \textit{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
-    A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
-  \item \textit{Sicurezza} -
-  \item \textit{Scalabilit\`a} -
-  \item \textit{Supporto a molti metodi di pagamento} -
-  \item \textit{Documentazione estensiva} -
+    A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con zero o comunque pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
+  \item \textit{Sicurezza} - Stripe permette di semplificare enormemente l'oneroso lavoro di integrare di un sistema di pagamenti che rispetta
+    gli standard PCI DSS, essendo tutto gestito direttamente con redirect a Stripe o attraverso elementi integrati nell'applicazione ma hostati sui loro server. Non c'\`e quindi
+    bisogno di trattare e memorizzare dati riguardanti i metodi di pagamento, evitando tutte le complicazioni che ne conseguono.
+  \item \textit{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay o Apple Pay.
+  \item \textit{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
+  \item \textit{Pricing trasparente} - Non ha costi nascosti: \texteuro 0,25 + 1.5\% per ogni transazione eseguita per carte europee.
 \end{itemize}
-\section{Docker}
-Placeholder
+\subsection{Docker}
+Docker \`e uno dei software pi\`u popolari in ambito aziendale e non, per la sua capacit\`a di creare dei \textit{container} dove vengono eseguite le applicazioni in maniera isolata.
+Docker si basa su alcuni concetti fondamentali:
+\begin{itemize}
+  \item \textit{Docker Images} - Sono dei template che vengono utilizzati per creare i container. Contengono tutte le configurazioni e gli eseguibili delle dipendenze richieste
+    dall'applicazione containerizzata. Sono in genere molto leggere, visto che devono essere portabili. Le immagini possono essere condivise con cose come Docker Hub.
+  \item \textit{Docker Containers} - L'ambiente dove l'applicativo containerizzato viene eseguito. Nel caso di un sistema Linux, al contrario di un normale software di virtualizzazione
+    i container di Docker vengono eseguiti sullo stesso kernel del sistema host. Questo significa che se un'applicazione containerizzata richiede una system call specifica
+    per venire eseguita e la versione del kernel installata sull'host non la supporta, non \`e possibile eseguire quel container. Su Windows e macOS invece viene eseguito
+    attraverso una VM Linux, in quanto \`e necessario un kernel Linux per utilizzare Docker.
+  \item \textit{Dockerfile} - Un file di testo che contiene tutte le istruzioni necessarie per creare un'immagine. Al suo interno vengono specificate una \textit{base image},
+    un'immagine che la build andr\`a ad estendere. \`E` possibile anche creare un'immagine da zero, ed \`e possibile utilizzare immagini diverse per buildare l'applicazione e per eseguirla
+    (\textit{Multi-staged build}). Per esempio, \`e comune utilizzare un'immagine minimale di Linux come alpine per buildare un sito, per poi prendere il risultato e usarlo con
+    l'immagine base di \textit{nginx},
+  \item \textit{Docker Compose} - Permette di definire applicazioni multi-container, offrendo opzioni come la possibilit\`a di specificare dipendenze tra container, variabili d'ambiente,
+    mapping tra porte interne ed esterne al container, e creare dei network virtuali.
+\end{itemize}
+
 \subsection{Kubernetes}
 Placeholder
