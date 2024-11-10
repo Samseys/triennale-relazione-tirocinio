@@ -74,8 +74,21 @@ Di seguito alcune delle caratteristiche che lo contraddistinguono:
   \item \textbf{Supporto per transazioni complesse} - Postgres supporta la scrittura di transazioni complesse e funzioni procedurali attraverso un linguaggio chiamato
     \textit{PL/pgSQL}, che permette di creare logiche pi\`u avanzate.
 \end{itemize}
-\subsection {SpringBoot}
-Placeholder
+\subsection {Spring e SpringBoot}
+Spring \`e un framework di Java creato per semplificare lo sviluppo di applicazioni a livello enterprise, fornendo una serie di strumenti per gestire i problemi pi\`u comuni
+durante lo sviluppo, permettendo agli sviluppatori di concentrarsi sulla \textit{business logic} piuttosto che sui dettagli implementativi.
+Esempi di questi sono Spring Data o Spring Security.
+
+Spring si basa sul concetto di \textit{Inversion of Control} (IoC), dove gli oggetti invece di creare le loro dipendenze direttamente le ricevono da fonti esterne.
+Questo \`e implementato attraverso un pattern chiamato \textit{Dependency Injection}, in cui gli oggetti definiscono le proprie dipendenze e lo \textit{Spring IoC Container}
+gliele fornisce quando vengono creati.
+Lo Spring IoC Container si occupa dell'intero ciclo di vita di un oggetto, e nel contesto di Spring questi prendono il nome di \textit{bean}.
+\\\\
+Spring da solo \`e difficile da configurare e richiede molto \textit{boilerplate}. Per cercare di ovviare a questo problema \`e stato creato il progetto \textit{SpringBoot}.
+Lo scopo di SpringBoot \`e quello di semplificare il processo di configurazione di Spring, configurando automaticamente le dipendenze incluse in modo ragionevole.
+Per esempio, se si volesse utilizzare un web-server, basta includere spring-boot-starter-web tra le dipendenze e SpringBoot configurer\`a automaticamente un web-server come Tomcat, di default.
+\\\\
+Spring con SpringBoot fornisce quindi un pacchetto completo e semplice da usare per creare applicazioni complesse in tempi di sviluppo ridotti.
 \subsection{Angular}
 Placeholder
 %Angular \`e uno dei framework JavaScript pi\`u popolari,
@@ -123,9 +136,9 @@ Kubernetes gestisce i pod attraverso quattro tipi di controller:
 \begin{itemize}
   \item \textbf{Deployment} - Viene utilizzato nel caso sia necessario avere uno o pi\`u pod identici (\textit{ReplicaSet}) che non devono mantenere uno stato persistente. Kubernetes si occupa
     di garantire che lo stato specificato nella configurazione venga rispettato, monitorando la salute dei pod e riavviandoli in caso di problemi.
-    Un esempio di utilizzo è per hostare un webserver che restituisce contenuti statici.
-  \item \textbf{StatefulSet} - Come un Deployment, gestiscono pod identici generati in base agli stessi container. La differenza è che l'identità di ogni pod è unica e lo storage, così come l'identificativo di rete,
-    vengono mantenuti in caso di rescheduling. Può essere utilizzato per applicazioni come database, o sistemi di caching (come Redis).
+    Un esempio di utilizzo \`e per hostare un web-server che restituisce contenuti statici.
+  \item \textbf{StatefulSet} - Come un Deployment, gestiscono pod identici generati in base agli stessi container. La differenza \`e che l'identit\`a di ogni pod \`e unica e lo storage, cos\`i come l'identificativo di rete,
+    vengono mantenuti in caso di rescheduling. Pu\`o essere utilizzato per applicazioni come database, o sistemi di caching (come Redis).
   \item \textbf{DaemonSet} - Vengono utilizzati per applicazioni che devono essere eseguite su ogni nodo, sono quindi utili per task come raccogliere log, monitoraggio o sistemi di rilevamento di intrusione.
   \item \textbf{Job} - Crea uno o pi\`u pod che continuano a venire eseguiti finch\'e un numero specifico di questi riesce ad arrivare a compimento. \`E possibile anche schedulare l'avvio di
     una task usando i CronJob.
