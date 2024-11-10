@@ -74,9 +74,6 @@ Di seguito alcune delle caratteristiche che lo contraddistinguono:
   \item \textbf{Supporto per transazioni complesse} - Postgres supporta la scrittura di transazioni complesse e funzioni procedurali attraverso un linguaggio chiamato
     \textit{PL/pgSQL}, che permette di creare logiche pi\`u avanzate.
 \end{itemize}
-
-\subsection{Java}
-Placeholder
 \subsection {SpringBoot}
 Placeholder
 \subsection{Angular}
@@ -90,9 +87,9 @@ Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transaz
 \begin{itemize}
   \item \textbf{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
     A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con zero o comunque pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
-  \item \textbf{Sicurezza} - Stripe semplifica enormemente l'oneroso lavoro di integrare di un sistema di pagamenti che rispetta
-    gli standard PCI DSS, essendo tutto gestito direttamente con redirect a Stripe o attraverso elementi integrati nell'applicazione ma hostati sui loro server. Non c'\`e quindi
-    bisogno di trattare e memorizzare dati riguardanti i metodi di pagamento, evitando tutte le complicazioni che ne conseguono.
+  \item \textbf{Sicurezza} - Stripe semplifica l'oneroso lavoro di integrare di un sistema di pagamenti che rispetta gli standard PCI DSS, essendo tutto gestito
+    direttamente con redirect a Stripe o attraverso elementi integrati nell'applicazione ma hostati sui loro server. Non c'\`e quindi bisogno di trattare e memorizzare dati
+    riguardanti i metodi di pagamento, evitando tutte le complicazioni che ne conseguono.
   \item \textbf{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay o Apple Pay.
   \item \textbf{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
 \end{itemize}
@@ -124,12 +121,13 @@ L'unit\`a pi\`u piccola creabile e deployabile \`e un \textit{pod}, un gruppo di
 \\\\
 Kubernetes gestisce i pod attraverso quattro tipi di controller:
 \begin{itemize}
-  \item \textbf{Deployments} - Viene utilizzato nel caso sia necessario avere uno o pi\`u pod identici (ReplicaSet) che non devono mantenere uno stato persistente. Kubernetes si occupa
-    di garantire che lo stato specificato nella configurazione venga rispettato, monitorando lo stato di salute dei pod e riavviandoli in caso di problemi.
-  \item \textbf{StatefulSets} - Come un Deployment, gestiscono pod identici generati in base agli stessi container. La differenza è che l'identità di ogni pod è unica e lo storage, così come l'identificativo di rete,
-    vengono mantenuti in caso di rescheduling.
-  \item \textbf{DemonSets} - Vengono utilizzati per applicazioni che devono essere eseguite su ogni nodo, sono quindi utili per task come raccogliere log, monitoraggio o sistemi di rilevamento di intrusione.
-  \item \textbf{Jobs} - Crea uno o pi\`u pod che continuano a venire eseguiti finch\'e un numero specifico di questi riesce ad arrivare a compimento. \`E possibile anche schedulare l'avvio di
+  \item \textbf{Deployment} - Viene utilizzato nel caso sia necessario avere uno o pi\`u pod identici (\textit{ReplicaSet}) che non devono mantenere uno stato persistente. Kubernetes si occupa
+    di garantire che lo stato specificato nella configurazione venga rispettato, monitorando la salute dei pod e riavviandoli in caso di problemi.
+    Un esempio di utilizzo è per hostare un webserver che restituisce contenuti statici.
+  \item \textbf{StatefulSet} - Come un Deployment, gestiscono pod identici generati in base agli stessi container. La differenza è che l'identità di ogni pod è unica e lo storage, così come l'identificativo di rete,
+    vengono mantenuti in caso di rescheduling. Può essere utilizzato per applicazioni come database, o sistemi di caching (come Redis).
+  \item \textbf{DaemonSet} - Vengono utilizzati per applicazioni che devono essere eseguite su ogni nodo, sono quindi utili per task come raccogliere log, monitoraggio o sistemi di rilevamento di intrusione.
+  \item \textbf{Job} - Crea uno o pi\`u pod che continuano a venire eseguiti finch\'e un numero specifico di questi riesce ad arrivare a compimento. \`E possibile anche schedulare l'avvio di
     una task usando i CronJob.
 \end{itemize}
 Uno dei punti di forza pi\`u grandi di Kubernetes \`e la sua funzione di \textit{Horizontal Pod Autoscaling}, che permette di regolare automaticamente il numero di pod avviati in base a
