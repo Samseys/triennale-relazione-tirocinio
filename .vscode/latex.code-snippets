@@ -1,0 +1,9 @@
+{
+	"Lettera Accentata": {
+		"prefix": "acc",
+		"body": [
+			"\\`$1"
+		],
+		"description": "Lettera Accentata"
+	}
+}

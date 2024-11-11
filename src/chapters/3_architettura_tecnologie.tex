@@ -1,4 +1,25 @@
 \section{Architettura Event-driven con Microservizi}
+Viste le specifiche richieste da Sentinel come sistema, si \`e optato per utilizzare un'architettura Event-driven con Microservizi.
+In questo tipo di architettura il sistema \`e diviso in servizi indipendenti che sono responsabili di una porzione delle funzionalit\`a.
+I servizi comunicano tra loro attraverso un Message Broker, in questo caso RabbitMQ, che si occupa di distribuire i messaggi.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{images/architecture-example.png}
+  \caption{Grafico che spiega il messaging tra Microservizi attraverso RabbitMQ\cite{microsoftrabbitmq}}
+\end{figure}
+Utilizzare questa architettura significa avere dei servizi che non sono strettamente collegati tra loro, e questo ha diversi vantaggi:
+\begin{itemize}
+  \item \textbf{Comunicazione Asincrona} - Nonostante l'overhead di avere il message broker tra le comunicazioni, questo pattern di comunicazione pu\`o portare a incrementi delle prestazioni
+    vista la loro natura asincrona.
+  \item \textbf{Codebase separate} - Avere delle codebase separate vuol dire poter assegnare team diversi per ogni servizio, e la possibilit\`a di usare tech stack differenti.
+    Avere codebase pi\`u piccole inoltre ha il vantaggio che queste sono meno complesse, velocizzando il processo di sviluppo.
+  \item \textbf{Deploy Indipendente} - Al contrario di un sistema monolitico, i servizi possono essere deployati e scalati in maniera indipendente.
+    Questo ha notevoli vantaggi: build time pi\`u rapido e possibilit\`a di scalare ogni servizio in maniera indipendente (per esempio aumentando il loro numero)
+  \item \textbf{Isolamento in caso di downtime} - Nel caso un servizio vada gi\`u, che sia nel caso di crash o riavvii programmati per aggiornamenti, non va gi\`u l'intero sistema
+    ma solo il servizio stesso. Le comunicazioni vengono inoltre salvate all'interno della coda, in attesa di essere risolte quando il servizio torna online.
+\end{itemize}
+Di contro il sistema pu\`o risultare pi\`u difficile da debuggare nella sua totalit\`a, vista la complessit\`a aumentata e la quantit\`a di parti.
+
 \section{Tecnologie utilizzate}
 
 L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati in ambiente aziendale:
@@ -86,15 +107,15 @@ Spring da solo \`e difficile da configurare e richiede molto boilerplate. Per ce
 Lo scopo di SpringBoot \`e quello di semplificare il processo di configurazione di Spring, configurando automaticamente le dipendenze incluse in modo ragionevole.
 Per esempio, se si volesse utilizzare un web-server, basta includere spring-boot-starter-web tra le dipendenze e SpringBoot configurer\`a automaticamente un web-server come Tomcat, di default.
 \subsection{Angular}
-Angular è un framework JavaScript creato da Google e ideato per creare \textbf{Single-Page Web Applications} (SPA). È profondamente integrato con TypeScript,
-che significa avere una serie di vantaggi come maggiore Type Safety, codice più leggibile e mantenibile, oltre ad avere maggiori aiuti da IDE moderni come Visual Studio Code
+Angular \`e un framework JavaScript creato da Google e ideato per creare \textbf{Single-Page Web Applications} (SPA). \`E profondamente integrato con TypeScript,
+che significa avere una serie di vantaggi come maggiore Type Safety, codice pi\`u leggibile e mantenibile, oltre ad avere maggiori aiuti da IDE moderni come Visual Studio Code
 con l'autocompletamento.
 \\\\
-Angular fornisce un pacchetto ben fornito di funzionalità anche senza l'utilizzo di librerie aggiuntive, tra cui ottimi strumenti di gestione del
+Angular fornisce un pacchetto ben fornito di funzionalit\`a anche senza l'utilizzo di librerie aggiuntive, tra cui ottimi strumenti di gestione del
 routing, gestione dei form, client HTTP, gestione dello stato, integrazione nativa con RxJS e altro.
 \\\\
-Per il progetto Sentinel inoltre è stato scelto di usare il \textbf{SignalStore di NgRx}, una soluzione di gestione dello stato completamente basata sui \textbf{Signal} di Angular,
-introdotti in developer preview in Angular 16. Nei capitoli successivi verrà discussa più in dettaglio l'implementazione delle feature per la gestione di uno stato
+Per il progetto Sentinel inoltre \`e stato scelto di usare il \textbf{SignalStore di NgRx}, una soluzione di gestione dello stato completamente basata sui \textbf{Signal} di Angular,
+introdotti in developer preview in Angular 16. Nei capitoli successivi verr\`a discussa pi\`u in dettaglio l'implementazione delle feature per la gestione di uno stato
 con chiamate ad un server.
 \subsection{Stripe}
 Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transazioni elettroniche.
