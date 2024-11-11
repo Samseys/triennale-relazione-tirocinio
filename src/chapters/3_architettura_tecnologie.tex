@@ -1,11 +1,10 @@
-\section{Architettura Event-driven}
-
+\section{Architettura Event-driven con Microservizi}
 \section{Tecnologie utilizzate}
 
 L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati in ambiente aziendale:
 
 \subsection{RabbitMQ}
-Rabbit\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di RabbitMQ\cite{rabbitmq}}
+RabbitMQ\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di RabbitMQ\cite{rabbitmq}}
 \`e un message broker, cio\`e, un software che consente la comunicazione asincrona tra programmi.
 Funziona attraverso \textbf{queues} (code) su cui i \textbf{producers} (mittenti) inviano messaggi definiti a priori,
 e i \textbf{consumers} (destinatari) consumano questi messaggi eseguendo operazioni in base al loro contenuto.
@@ -108,11 +107,11 @@ Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transaz
   \item \textbf{Sicurezza} - Stripe semplifica l'oneroso lavoro di integrare di un sistema di pagamenti che rispetta gli standard PCI DSS, essendo tutto gestito
     direttamente con redirect a Stripe o attraverso elementi integrati nell'applicazione ma hostati sui loro server. Non c'\`e quindi bisogno di trattare e memorizzare dati
     riguardanti i metodi di pagamento, evitando tutte le complicazioni che ne conseguono.
-  \item \textbf{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay o Apple Pay.
+  \item \textbf{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay e Apple Pay.
   \item \textbf{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
 \end{itemize}
 \subsection{Docker}
-Docker\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
+Docker\footnote{Questa sezione utilizza informazioni e immagini tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
 \`e uno dei software pi\`u popolari in ambito aziendale e non, per la sua capacit\`a di creare dei container dove vengono eseguite le applicazioni in maniera isolata.
 Docker si basa su alcuni concetti fondamentali:
 \begin{itemize}
