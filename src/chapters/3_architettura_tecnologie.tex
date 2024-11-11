@@ -1,7 +1,6 @@
-\section{Architettura a microservizi}
 \section{Architettura Event-driven}
 
-\section{Tecnologie e servizi utilizzati}
+\section{Tecnologie utilizzate}
 
 L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati in ambiente aziendale:
 
@@ -87,11 +86,18 @@ Lo Spring IoC Container si occupa dell'intero ciclo di vita di un oggetto, e nel
 Spring da solo \`e difficile da configurare e richiede molto \textit{boilerplate}. Per cercare di ovviare a questo problema \`e stato creato il progetto \textit{SpringBoot}.
 Lo scopo di SpringBoot \`e quello di semplificare il processo di configurazione di Spring, configurando automaticamente le dipendenze incluse in modo ragionevole.
 Per esempio, se si volesse utilizzare un web-server, basta includere spring-boot-starter-web tra le dipendenze e SpringBoot configurer\`a automaticamente un web-server come Tomcat, di default.
-\\\\
-Spring con SpringBoot fornisce quindi un pacchetto completo e semplice da usare per creare applicazioni complesse in tempi di sviluppo ridotti.
 \subsection{Angular}
-Placeholder
-%Angular \`e uno dei framework JavaScript pi\`u popolari,
+Angular \`e un framework JavaScript creato da Google e ideato per costruire \textit{Single-Page Web Applications} (SPA).
+\`E profondamente integrato con TypeScript, che significa avere una serie di vantaggi come maggiore Type Safety, codice pi\`u leggibile e mantenibile,
+oltre ad avere maggiori aiuti da IDE moderni come VSCode con l'autocompletamento.
+\\\\
+Angular fornisce un pacchetto ben fornito di funzionalit\`a senza l'utilizzo di librerie aggiuntive, tra cui ottimi tool per la gestione del routing, gestione dei form,
+client HTTP, gestione dello stato, e un'integrazione nativa con RxJS.
+\\\\
+Per il progetto Sentinel \`e stato inoltre scelto di usare il SignalStore di NgRx, una soluzione di gestione dello stato completamente basata sui Signal di Angular,
+introdotti in \textit{developer preview} in Angular 16.
+Nei capitoli successivi verr\`a discussa pi\`u in dettaglio l'implementazione delle feature per la gestione di uno stato con chiamate ad un server.
+
 \subsection{Stripe}
 Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transazioni elettroniche.
 %TODO Scrivere un'introduzione decente
