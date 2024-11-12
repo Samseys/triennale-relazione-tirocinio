@@ -1,7 +1,9 @@
+In questo capitolo verr\`a descritta l'architettura di Sentinel e la tech stack utilizzata dal Credit Manager, di cui la maggior parte condivisa con il resto dei servizi.
+
 \section{Architettura Event-driven con Microservizi}
 Viste le specifiche richieste da Sentinel come sistema, si \`e optato per utilizzare un'architettura Event-driven con Microservizi.
 In questo tipo di architettura il sistema \`e diviso in servizi indipendenti che sono responsabili di una porzione delle funzionalit\`a.
-I servizi comunicano tra loro attraverso un Message Broker, in questo caso RabbitMQ, che si occupa di distribuire i messaggi.
+I servizi comunicano tra loro attraverso un message broker, in questo caso RabbitMQ, che si occupa di distribuire i messaggi.
 \begin{figure}[H]
   \centering
   \includegraphics[width=10cm]{images/architecture-example.png}
@@ -10,22 +12,24 @@ I servizi comunicano tra loro attraverso un Message Broker, in questo caso Rabbi
 Utilizzare questa architettura significa avere dei servizi che non sono strettamente collegati tra loro, e questo ha diversi vantaggi:
 \begin{itemize}
   \item \textbf{Comunicazione Asincrona} - Nonostante l'overhead di avere il message broker tra le comunicazioni, questo pattern di comunicazione pu\`o portare a incrementi delle prestazioni
-    vista la loro natura asincrona.
+    vista la loro natura asincrona. Per esempio, questo studio\cite{eventdrivenperformance} ha osservato una riduzione nel tempo di risposta fino al 19.18\% utilizzando un message broker per la comunicazione
+    intra-servizi invece di semplici chiamate HTTP.
   \item \textbf{Codebase separate} - Avere delle codebase separate vuol dire poter assegnare team diversi per ogni servizio, e la possibilit\`a di usare tech stack differenti.
     Avere codebase pi\`u piccole inoltre ha il vantaggio che queste sono meno complesse, velocizzando il processo di sviluppo.
-  \item \textbf{Deploy Indipendente} - Al contrario di un sistema monolitico, i servizi possono essere deployati e scalati in maniera indipendente.
-    Questo ha notevoli vantaggi: build time pi\`u rapido e possibilit\`a di scalare ogni servizio in maniera indipendente (per esempio aumentando il loro numero)
+  \item \textbf{Deploy Indipendente} - Al contrario di un sistema monolitico, i servizi possono essere deployati in maniera indipendente.
+    Questo ha notevoli benefici: build time pi\`u rapido e possibilit\`a di scalare i singoli servizi in base al carico, permettendo un migliore uso delle
+    risorse.
   \item \textbf{Isolamento in caso di downtime} - Nel caso un servizio vada gi\`u, che sia nel caso di crash o riavvii programmati per aggiornamenti, non va gi\`u l'intero sistema
     ma solo il servizio stesso. Le comunicazioni vengono inoltre salvate all'interno della coda, in attesa di essere risolte quando il servizio torna online.
 \end{itemize}
 Di contro il sistema pu\`o risultare pi\`u difficile da debuggare nella sua totalit\`a, vista la complessit\`a aumentata e la quantit\`a di parti.
 
 \section{Tecnologie utilizzate}
-
-L'applicativo si basa su tecnologie e servizi ampiamente adottati e consolidati in ambiente aziendale:
+In questa sezione verranno descritte le principali tecnologie e i servizi scelti per implementare il Credit Manager.
+Ognuna di queste scelte \`e stata presa tenendo conto di fattori quali le prestazioni, la scalabilit\`a, la semplicit\`a d'uso e la qualit\`a della documentazione disponibile.
 
 \subsection{RabbitMQ}
-RabbitMQ\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di RabbitMQ\cite{rabbitmq}}
+RabbitMQ\footnote{Questa sezione utilizza informazioni e immagini tratte dalla documentazione ufficiale di RabbitMQ\cite{rabbitmq}}
 \`e un message broker, cio\`e, un software che consente la comunicazione asincrona tra programmi.
 Funziona attraverso \textbf{queues} (code) su cui i \textbf{producers} (mittenti) inviano messaggi definiti a priori,
 e i \textbf{consumers} (destinatari) consumano questi messaggi eseguendo operazioni in base al loro contenuto.
@@ -118,10 +122,9 @@ Per il progetto Sentinel inoltre \`e stato scelto di usare il \textbf{SignalStor
 introdotti in developer preview in Angular 16. Nei capitoli successivi verr\`a discussa pi\`u in dettaglio l'implementazione delle feature per la gestione di uno stato
 con chiamate ad un server.
 \subsection{Stripe}
-Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transazioni elettroniche.
-%TODO Scrivere un'introduzione decente
-% Prezzo per transazione: \texteuro 0,25 + 1.5\% per ogni transazione eseguita con carte europee.
-
+Stripe \`e uno dei servizi pi\`u utilizzati nell'ambito dei pagamenti digitali, per la sua semplicit\`a di utilizzo e per la sua capacit\`a di adattarsi alle esigenze delle aziende
+di ogni dimensione. Ha un costo di \texteuro 0,25 + 1,5\% per ogni transazione, senza costi ulteriori.
+L'utilizzo di Stripe rispetto ai competitor ha diversi vantaggi:
 \begin{itemize}
   \item \textbf{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
     A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con zero o comunque pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
@@ -132,7 +135,7 @@ Stripe \`e una piattaforma di pagamento che funge da intermediario nelle transaz
   \item \textbf{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
 \end{itemize}
 \subsection{Docker}
-Docker\footnote{Questa sezione utilizza informazioni e immagini tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
+Docker\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
 \`e uno dei software pi\`u popolari in ambito aziendale e non, per la sua capacit\`a di creare dei container dove vengono eseguite le applicazioni in maniera isolata.
 Docker si basa su alcuni concetti fondamentali:
 \begin{itemize}
