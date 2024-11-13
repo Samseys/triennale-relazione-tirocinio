@@ -8,7 +8,7 @@ In questo capitolo ci concentreremo sulle interfacce del Frontend. Per quanto ri
 L'interfaccia prevede la suddivisione in due schermate principali, una per la gestione del Wallet e una per la gestione dei listini prezzi.
 
 \section{Sezione per la gestione del Wallet}
-Per monitorare il Wallet del suo tenant di appartenenza, l'utente ha a disposizione una dashboard in cui pu\`o visualizzare lo storico delle transazioni e ricaricare il Wallet.
+Per monitorare il Wallet del suo tenant di appartenenza, l'utente ha a disposizione una dashboard in cui pu\`o visualizzare lo storico delle transazioni ed effettuare una ricarica del credito.
 
 \begin{figure}[H]
   \centering
@@ -50,18 +50,22 @@ Il bottone \textbf{Filtri} apre una schermata laterale dove \`e possibile selezi
 \end{figure}
 
 \section{Sezione per la gestione dei listini prezzi}
-L'amministratore ha a disposizione una schermata in cui pu\`o aggiungere, modificare o cancellare un listino prezzi.
+L'amministratore ha a disposizione una schermata in cui pu\`o aggiungere, modificare o cancellare un listino prezzi, come indicato nella \textbf{Figura \ref{listalistini}}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=13cm]{images/gestione-listini/listini-prezzi-list.png}
   \caption{Wireframe della schermata con la lista dei listini prezzi}
+  \label{listalistini}
 \end{figure}
-Il bottone \textbf{Aggiungi Listino} reindirizza ad una pagina che consente di inserire i dati per creare un nuovo listino prezzi, come nella Figura \ref{aggiungilistino}.
+Il bottone \textbf{Aggiungi Listino} reindirizza a una pagina che consente di inserire i dati per creare un nuovo listino prezzi, come nella \textbf{Figura \ref{aggiungilistino}}.
 \\\\
-Nella tabella invece sono presenti 3 azioni per ogni listino prezzi.
-La prima apre il dettaglio indicato nella Figura \ref{dettagliolistino}.
-La seconda reindirizza ad una pagina analoga a quella della Figura \ref{aggiungilistino}, che permette di modificare il listino prezzi.
-La terza apre una schermata che chiede se si vuole veramente procedere all'eliminazione, che se confermata procede all'eliminazione.
+Nella tabella invece sono presenti 3 azioni per ogni listino prezzi:
+\begin{enumerate}
+  \item Apertura del dettaglio come indicato nella \textbf{Figura \ref{dettagliolistino}}.
+  \item Reindirizzamento a una pagina analoga a quella della \textbf{Figura \ref{aggiungilistino}}, che permette di modificare il listino prezzi.
+  \item Apertura di una schermata di conferma per l'eliminazione del listino.
+\end{enumerate}
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=13cm]{images/gestione-listini/dettaglio-listino.png}
@@ -69,9 +73,9 @@ La terza apre una schermata che chiede se si vuole veramente procedere all'elimi
   \label{dettagliolistino}
 \end{figure}
 
-Nel dettaglio del listino prezzi sono presenti due sezioni: nella sezione \textbf{Informazioni Base} sono presenti la descrizione e la fascia di prezzo, mentre nella sezione
-\textbf{Prezzi} \`e presente una tabella per ogni banca dati con il relativo costo di ogni operazione all'interno del listino prezzi. Ogni tabella \`e chiudibile.
-Con il bottone di edit (l'icona a forma di matita) si viene reindirizzati ad una pagina che permette di modificare il listino, analoga alla schermata presente nella Figura \ref{aggiungilistino}.
+Il dettaglio del listino prezzi \`e suddiviso in due sezioni: nella sezione \textbf{Informazioni Base} sono presenti la descrizione e la fascia di prezzo, mentre nella sezione
+\textbf{Prezzi} \`e presente una tabella nascondibile per ogni banca dati, con il relativo costo di ogni operazione all'interno del listino prezzi.
+Con il bottone di edit (l'icona a forma di matita) si viene reindirizzati a una pagina che permette di modificare il listino, analoga alla schermata presente nella \textbf{Figura \ref{aggiungilistino}}.
 
 \begin{figure}[H]
   \centering
@@ -80,13 +84,13 @@ Con il bottone di edit (l'icona a forma di matita) si viene reindirizzati ad una
   \label{aggiungilistino}
 \end{figure}
 Nella sezione \textbf{Informazioni Base} \`e possibile inserire una descrizione e una fascia di prezzo.
-Nella sezione \textbf{Prezzi} \`e presente una tabella per ogni banca dati che riporta i costi inseriti. Anche qui, ogni tabella \`e chiudibile.
-Cliccare su una riga apre una schermata analoga a quella indicata nella Figura \ref{aggiungiprezzo}, con la differenza che la selezione del tipo operazione
-non \`e presente in quanto il campo \`e preselezionato. Questa schermata consente quindi di modificare il prezzo inserito in precedenza,
+Nella sezione \textbf{Prezzi} \`e presente una tabella nascondibile per ogni banca dati che riporta i costi inseriti.
+Cliccare su una riga apre una schermata analoga a quella indicata nella \textbf{Figura \ref{aggiungiprezzo}}, con la differenza che la selezione del tipo operazione
+non \`e presente, in quanto il campo \`e preselezionato. Questa schermata consente quindi di modificare il prezzo inserito in precedenza.
 
 Per terminare la creazione di un Listino \`e necessario inserire un importo per tutte le operazioni di pagamento.
 \\\\
-Il bottone \textbf{Aggiungi Prezzo} apre la schermata di aggiunta del prezzo in Figura \ref{aggiungiprezzo}
+Il bottone \textbf{Aggiungi Prezzo} apre la schermata di aggiunta del prezzo in \textbf{Figura \ref{aggiungiprezzo}}
 \begin{figure}[H]
   \centering
   \includegraphics[width=8.5cm]{images/gestione-listini/aggiungi-prezzo.png}
@@ -94,4 +98,4 @@ Il bottone \textbf{Aggiungi Prezzo} apre la schermata di aggiunta del prezzo in 
   \label{aggiungiprezzo}
 \end{figure}
 
-Da questa schermata \`e possibile selezionare un tipo operazione e specificare il suo importo, avendo sempre sotto controllo il suo costo reale di interrogare la banca dati esterna.
+Da questa schermata \`e possibile selezionare un tipo operazione e specificare il suo importo, potendolo sempre confrontare con il costo reale di interrogazione della banca dati esterna.

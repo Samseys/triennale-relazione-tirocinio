@@ -7,22 +7,22 @@ I servizi comunicano tra loro attraverso un message broker, in questo caso Rabbi
 \begin{figure}[H]
   \centering
   \includegraphics[width=10cm]{images/architecture-example.png}
-  \caption{Grafico che spiega il messaging tra Microservizi attraverso RabbitMQ\cite{microsoftrabbitmq}}
+  \caption{Grafico illustrativo del messaging tra Microservizi attraverso RabbitMQ\cite{microsoftrabbitmq}}
 \end{figure}
 Utilizzare questa architettura significa avere dei servizi che non sono strettamente collegati tra loro, e questo ha diversi vantaggi:
 \begin{itemize}
-  \item \textbf{Comunicazione Asincrona} - Nonostante l'overhead di avere il message broker tra le comunicazioni, questo pattern di comunicazione pu\`o portare a incrementi delle prestazioni
-    vista la loro natura asincrona. Per esempio, questo studio\cite{eventdrivenperformance} ha osservato una riduzione nel tempo di risposta fino al 19.18\% utilizzando un message broker per la comunicazione
+  \item \textbf{Comunicazione Asincrona} - Nonostante l'overhead di avere il message broker tra le comunicazioni, questo pattern di comunicazione pu\`o portare a incrementi delle prestazioni,
+    vista la loro natura asincrona. Per esempio, questo studio\cite{eventdrivenperformance} ha osservato una riduzione nel tempo di risposta fino al 19.18\%, utilizzando un message broker per la comunicazione
     intra-servizi invece di semplici chiamate HTTP.
   \item \textbf{Codebase separate} - Avere delle codebase separate vuol dire poter assegnare team diversi per ogni servizio, e la possibilit\`a di usare tech stack differenti.
-    Avere codebase pi\`u piccole inoltre ha il vantaggio che queste sono meno complesse, velocizzando il processo di sviluppo.
+    Avere codebase pi\`u piccole inoltre ha il vantaggio di ridurne la complessit\`a', velocizzando il processo di sviluppo.
   \item \textbf{Deploy Indipendente} - Al contrario di un sistema monolitico, i servizi possono essere deployati in maniera indipendente.
     Questo ha notevoli benefici: build time pi\`u rapido e possibilit\`a di scalare i singoli servizi in base al carico, permettendo un migliore uso delle
     risorse.
   \item \textbf{Isolamento in caso di downtime} - Nel caso un servizio vada gi\`u, che sia nel caso di crash o riavvii programmati per aggiornamenti, non va gi\`u l'intero sistema
     ma solo il servizio stesso. Le comunicazioni vengono inoltre salvate all'interno della coda, in attesa di essere risolte quando il servizio torna online.
 \end{itemize}
-Di contro il sistema pu\`o risultare pi\`u difficile da debuggare nella sua totalit\`a, vista la complessit\`a aumentata e la quantit\`a di parti.
+Di contro il sistema pu\`o risultare pi\`u difficile da debuggare nella sua totalit\`a, vista la complessit\`a aumentata e la quantit\`a di componenti interconnessi.
 
 \section{Tecnologie utilizzate}
 In questa sezione verranno descritte le principali tecnologie e i servizi scelti per implementare il Credit Manager.
@@ -80,7 +80,7 @@ La scelta di PostgreSQL deriva dalla completezza delle funzionalit\`a che offre,
 Di seguito alcune delle caratteristiche che lo contraddistinguono:
 
 \begin{itemize}
-  \item \textbf{Elevate prestazioni} - \`E un database relazionale molto performante in grado di supportare decine di migliaia di operazioni al secondo sul giusto hardware,
+  \item \textbf{Elevate prestazioni} - \`E un database relazionale molto performante in grado di supportare decine di migliaia di operazioni al secondo su hardware adeguato,
     e offre una latenza minore rispetto a DBMS concorrenti come \textbf{MySQL} in molte operazioni.\cite{salunke2024performance}
   \item \textbf{Robustezza} - Postgres supporta molte funzioni di sicurezza, come autenticazione SSL, o configurazione dei permessi granulare fino al
     livello di colonne e righe.
@@ -112,7 +112,7 @@ Lo scopo di SpringBoot \`e quello di semplificare il processo di configurazione 
 Per esempio, se si volesse utilizzare un web-server, basta includere spring-boot-starter-web tra le dipendenze e SpringBoot configurer\`a automaticamente un web-server come Tomcat, di default.
 \subsection{Angular}
 Angular \`e un framework JavaScript creato da Google e ideato per creare \textbf{Single-Page Web Applications} (SPA). \`E profondamente integrato con TypeScript,
-che significa avere una serie di vantaggi come maggiore Type Safety, codice pi\`u leggibile e mantenibile, oltre ad avere maggiori aiuti da IDE moderni come Visual Studio Code
+che si traduce in una serie di vantaggi come maggiore Type Safety, codice pi\`u leggibile e mantenibile, oltre ad avere maggiori aiuti da IDE moderni come Visual Studio Code
 con l'autocompletamento.
 \\\\
 Angular fornisce un pacchetto ben fornito di funzionalit\`a anche senza l'utilizzo di librerie aggiuntive, tra cui ottimi strumenti di gestione del
@@ -123,7 +123,7 @@ introdotti in developer preview in Angular 16. Nei capitoli successivi verr\`a d
 con chiamate ad un server.
 \subsection{Stripe}
 Stripe \`e uno dei servizi pi\`u utilizzati nell'ambito dei pagamenti digitali, per la sua semplicit\`a di utilizzo e per la sua capacit\`a di adattarsi alle esigenze delle aziende
-di ogni dimensione. Ha un costo di \texteuro 0,25 + 1,5\% per ogni transazione, senza costi ulteriori.
+di ogni dimensione. Ha un costo di \texteuro 0,25 + 1,5\% per ogni transazione con carte europee, senza costi ulteriori.
 L'utilizzo di Stripe rispetto ai competitor ha diversi vantaggi:
 \begin{itemize}
   \item \textbf{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
@@ -135,20 +135,25 @@ L'utilizzo di Stripe rispetto ai competitor ha diversi vantaggi:
   \item \textbf{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
 \end{itemize}
 \subsection{Docker}
-Docker\footnote{Questa sezione utilizza informazioni tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
+Docker\footnote{Questa sezione utilizza informazioni e immagini tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
 \`e uno dei software pi\`u popolari in ambito aziendale e non, per la sua capacit\`a di creare dei container dove vengono eseguite le applicazioni in maniera isolata.
 Docker si basa su alcuni concetti fondamentali:
 \begin{itemize}
   \item \textbf{Docker Images} - Sono dei template che vengono utilizzati per creare i container. Contengono tutte le configurazioni e gli eseguibili delle dipendenze richieste
     dall'applicazione containerizzata. Sono in genere molto leggere, visto che devono essere portabili. Le immagini possono essere condivise attraverso repository come Docker Hub.
-  \item \textbf{Docker Containers} - L'ambiente dove l'applicativo containerizzato viene eseguito. Nel caso di un sistema Linux, al contrario di un normale software di virtualizzazione
+  \item \textbf{Docker Containers} - L'ambiente dove l'applicativo containerizzato viene eseguito. Nel caso di un sistema Linux, al contrario di un normale software di virtualizzazione,
     i container di Docker vengono eseguiti sullo stesso kernel del sistema host. Questo significa che se un'applicazione containerizzata richiede una system call specifica
-    per venire eseguita e la versione del kernel installata sull'host non la supporta, non \`e possibile eseguire quel container. Su Windows e macOS invece viene eseguito
+    per venire eseguita e la versione del kernel installata sull'host non la supporta, non \`e possibile eseguire quel container. Su Windows e macOS viene invece eseguito
     attraverso una VM Linux, in quanto \`e necessario un kernel Linux per utilizzare Docker.
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=11cm]{images/docker.png}
+      \caption{Schema sul funzionamento di Docker}
+    \end{figure}
   \item \textbf{Dockerfile} - Un file di testo che contiene tutte le istruzioni necessarie per creare un'immagine. Al suo interno viene specificata una \textbf{base image},
     un'immagine che la build andr\`a ad estendere. \`E possibile anche creare un'immagine da zero, ed \`e possibile utilizzare immagini diverse per buildare l'applicazione e per eseguirla
     (\textbf{Multi-staged build}). Per esempio, \`e comune utilizzare un'immagine minimale di Linux come alpine per buildare un sito, per poi prendere il risultato e usarlo con
-    l'immagine base di nginx,
+    l'immagine base di nginx.
   \item \textbf{Docker Compose} - Permette di definire applicazioni multi-container, offrendo opzioni come la possibilit\`a di specificare dipendenze tra container, variabili d'ambiente,
     mapping tra porte interne ed esterne al container, e creare dei network virtuali.
 \end{itemize}
