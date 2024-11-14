@@ -1,11 +1,6 @@
-\section{Funzionalit\`a offerte}
-L'applicazione prevede la presenza di un Wallet associato a ciascun tenant, che pu\`o essere ricaricato tramite pagamenti effettuati con \textbf{Stripe}.
-All'interno del sistema sono previsti dei \textbf{workflow}, processi che utilizzano dati provenienti da banche dati esterne per effettuare analisi di vario tipo.
-Ogni operazione all'interno del workflow ha un costo, e per ognuna di queste viene scalato un determinato importo in base a un listino prezzi associato al tenant di appartenenza dell'utente.
-Quando un'operazione viene inserita nella coda pagamenti, questa viene registrata nel database e il relativo importo viene scalato automaticamente dal Wallet del tenant.
-\\\\
-In questo capitolo ci concentreremo sulle interfacce del Frontend. Per quanto riguarda gli altri requisiti funzionali, verranno discussi in dettaglio nei capitoli successivi.
-L'interfaccia prevede la suddivisione in due schermate principali, una per la gestione del Wallet e una per la gestione dei listini prezzi.
+\chapter{Design del frontend}
+In questo capitolo ci soffermeremo sul design delle interfacce del frontend, utilizzando come riferimento dei wireframe creati con il web software \textbf{Balsamiq}.
+L'interfaccia \`e suddivisa in due schermate principali, una per la gestione del Wallet e una per la gestione dei listini prezzi.
 
 \section{Sezione per la gestione del Wallet}
 Per monitorare il Wallet del suo tenant di appartenenza, l'utente ha a disposizione una dashboard in cui pu\`o visualizzare lo storico delle transazioni ed effettuare una ricarica del credito.
