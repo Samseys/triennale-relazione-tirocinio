@@ -63,7 +63,7 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
     \begin{enumerate}
       \item
         \textbf{Acknowledgements} -  Una conferma da parte del consumer che tutto sia andato a buon fine.
-        Se il consumer non invia l'ack, Rabbit terr\`a il messaggio all'interno della coda o lo invier\`a ad un altro consumer.
+        Se il consumer non invia l'ack, Rabbit terr\`a il messaggio all'interno della coda o lo invier\`a a un altro consumer.
       \item \textbf{TTL (Time-to-Live) per messaggi e code} - \`E possibile impostare un limite di tempo che un messaggio pu\`o rimanere
         in una queue, dopo il quale vengono automaticamente scartati o vengono spostati su un DLX, riducendo il rischio che si
         possano accumulare messaggi causando problemi di risorse esaurite o code sovraccariche.
@@ -121,7 +121,7 @@ routing, gestione dei form, client HTTP, gestione dello stato, integrazione nati
 \\\\
 Per il progetto Sentinel inoltre \`e stato scelto di usare il \textbf{SignalStore di NgRx}, una soluzione di gestione dello stato completamente basata sui \textbf{Signal} di Angular,
 introdotti in developer preview in Angular 16. Nei capitoli successivi verr\`a discussa pi\`u in dettaglio l'implementazione delle feature per la gestione di uno stato
-con chiamate ad un server.
+con chiamate a un server.
 \subsection{Stripe}
 Stripe \`e uno dei servizi pi\`u utilizzati nell'ambito dei pagamenti digitali, per la sua semplicit\`a di utilizzo e per la sua capacit\`a di adattarsi alle esigenze delle aziende
 di ogni dimensione. Ha un costo di \texteuro 0,25 + 1,5\% per ogni transazione con carte europee, senza costi ulteriori.
@@ -152,7 +152,7 @@ Docker si basa su alcuni concetti fondamentali:
       \caption{Schema sul funzionamento di Docker}
     \end{figure}
   \item \textbf{Dockerfile} - Un file di testo che contiene tutte le istruzioni necessarie per creare un'immagine. Al suo interno viene specificata una \textbf{base image},
-    un'immagine che la build andr\`a ad estendere. \`E possibile anche creare un'immagine da zero, ed \`e possibile utilizzare immagini diverse per buildare l'applicazione e per eseguirla
+    un'immagine che la build andr\`a a estendere. \`E possibile anche creare un'immagine da zero, ed \`e possibile utilizzare immagini diverse per buildare l'applicazione e per eseguirla
     (\textbf{Multi-staged build}). Per esempio, \`e comune utilizzare un'immagine minimale di Linux come alpine per buildare un sito, per poi prendere il risultato e usarlo con
     l'immagine base di nginx.
   \item \textbf{Docker Compose} - Permette di definire applicazioni multi-container, offrendo opzioni come la possibilit\`a di specificare dipendenze tra container, variabili d'ambiente,

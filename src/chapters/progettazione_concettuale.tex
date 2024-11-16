@@ -10,9 +10,11 @@ Deve inoltre essere possibile annullare un'operazione. I listini sono sono costi
 
 \section{Progettazione concettuale}
 \subsection{Schema Entity-Relationship}
+Uno schema ad alto livello: \`e uno schema orientato puramente alla definizione dei dati e delle relazioni tra loro, senza fare considerazioni su performance o altro.
+Non sono presenti neanche le chiavi primarie normalmente richieste in un vero database.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=12cm]{images/er-diagram-concept.png}
+  \includegraphics[width=12cm]{images/db-diagrams/er-diagram-concept.png}
   \caption{Schema Entity-Relationship del database}
 \end{figure}
 
@@ -33,6 +35,17 @@ Deve inoltre essere possibile annullare un'operazione. I listini sono sono costi
 
 \begin{table}[H]
   \centering
+  \caption{Descrizione degli attributi dell'entit\`a Servizio}
+  \begin{tabulary}{\textwidth}{LLL}
+    \toprule
+    \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
+    \midrule
+    Nome & string & Nome del Servizio \\\bottomrule
+  \end{tabulary}
+\end{table}
+
+\begin{table}[H]
+  \centering
   \caption{Descrizione degli attributi dell'entit\`a Tipo Movimento}
   \begin{tabulary}{0.9\textwidth}{p{2.3cm}p{2.7cm}L}
     \toprule
@@ -42,17 +55,6 @@ Deve inoltre essere possibile annullare un'operazione. I listini sono sono costi
     Categoria Operazione & \{ADDEBITO, ACCREDITO\} & Tipologia di operazione. Utilizziamo un enum type per rappresentare questo attributo. \\\addlinespace
     Costo Reale & numeric & Costo reale affrontato interrogando la banca dati esterna \\\addlinespace
     Descrizione & string & Breve descrizione di cosa fa l'operazione\\\bottomrule
-  \end{tabulary}
-\end{table}
-
-\begin{table}[H]
-  \centering
-  \caption{Descrizione degli attributi dell'entit\`a Servizio}
-  \begin{tabulary}{\textwidth}{LLL}
-    \toprule
-    \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
-    \midrule
-    Nome & string & Nome del Servizio \\\bottomrule
   \end{tabulary}
 \end{table}
 
@@ -69,6 +71,11 @@ Deve inoltre essere possibile annullare un'operazione. I listini sono sono costi
 
 \subsection{Vincoli Esterni}
 Non \`e stato possibile rappresentare un singolo vincolo attraverso lo schema ER:\\\\
-\textbf{Tutti gli importi specificati} - Esiste una relationship Prezzo Listino tra ogni entit\`a Listino e ogni entit\`a Tipo Operazione
+\textbf{\label{tuttiimporticoncept}Tutti gli importi specificati} - Esiste una relationship Prezzo Listino tra ogni entit\`a Listino e ogni entit\`a Tipo Operazione
 
 \section{Casi d'uso}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{images/db-diagrams/use-case-diagram.jpg}
+  \caption{Schema UML dei casi d'uso}
+\end{figure}
