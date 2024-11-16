@@ -40,27 +40,39 @@ Non sono presenti neanche le chiavi primarie normalmente richieste in un vero da
     \toprule
     \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
     \midrule
-    Nome & string & Nome del Servizio \\\bottomrule
+    Nome & Stringa & Nome del Servizio \\\bottomrule
   \end{tabulary}
 \end{table}
 
 \begin{table}[H]
   \centering
-  \caption{Descrizione degli attributi dell'entit\`a Tipo Movimento}
+  \caption{Descrizione degli attributi dell'entit\`a Tipo Operazione}
   \begin{tabulary}{0.9\textwidth}{p{2.3cm}p{2.7cm}L}
     \toprule
     \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
     \midrule
-    Nome & string & Nome del Tipo Operazione \\\addlinespace
+    Nome & Stringa & Nome del Tipo Operazione \\\addlinespace
     Categoria Operazione & \{ADDEBITO, ACCREDITO\} & Tipologia di operazione. Utilizziamo un enum type per rappresentare questo attributo. \\\addlinespace
     Costo Reale & numeric & Costo reale affrontato interrogando la banca dati esterna \\\addlinespace
-    Descrizione & string & Breve descrizione di cosa fa l'operazione\\\bottomrule
+    Descrizione & Stringa & Breve descrizione di cosa fa l'operazione\\\bottomrule
   \end{tabulary}
 \end{table}
 
 \begin{table}[H]
   \centering
-  \caption{Descrizione degli attributi della relationship Prezzo Listino}
+  \caption{Descrizione degli attributi dell'entit\`a Listino}
+  \begin{tabulary}{\textwidth}{p{2.3cm}p{1.8cm}L}
+    \toprule
+    \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
+    \midrule
+    Descrizione & Stringa & Descrizione del Listino\\
+    Fascia Prezzo & \{ALTA, MEDIA, BASSA\} & Campo descrittivo per indicare la fascia di prezzo del listino\\\bottomrule
+  \end{tabulary}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \caption{Descrizione degli attributi della relationship lis\_op}
   \begin{tabulary}{\textwidth}{p{2.3cm}p{2.3cm}L}
     \toprule
     \textbf{Attributo} & \textbf{Dominio} & \textbf{Descrizione} \\
@@ -70,12 +82,30 @@ Non sono presenti neanche le chiavi primarie normalmente richieste in un vero da
 \end{table}
 
 \subsection{Vincoli Esterni}
-Non \`e stato possibile rappresentare un singolo vincolo attraverso lo schema ER:\\\\
+Dalla costruzione dello schema concettuale, \`e emersa la necessità di rappresentare il seguente vincolo esterno:\\\\
 \textbf{\label{tuttiimporticoncept}Tutti gli importi specificati} - Esiste una relationship Prezzo Listino tra ogni entit\`a Listino e ogni entit\`a Tipo Operazione
 
 \section{Casi d'uso}
+In questa sezione verrà fornito lo schema UML dei casi d'uso, che indica le funzionalit\`a dell'applicazione e gli attori che le useranno. Prenderemo inoltre in esame
+un caso d'uso rappresentativo all'interno dell'applicativo e che coinvolge le funzionalit\`a del Credit Manager.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=10cm]{images/db-diagrams/use-case-diagram.jpg}
+  \includegraphics[width=8.5cm]{images/db-diagrams/use-case-diagram.jpg}
   \caption{Schema UML dei casi d'uso}
 \end{figure}
+
+\textbf{crea\_listino(descrizione: Stringa, fascia\_prezzo: \{ALTA, MEDIA,\\BASSA\}, tipi\_operazione: [TipoOperazione], prezzi: [Numeric]) $\implies$ Listino:}\\\\
+\textit{pre}:\\\\
+\hspace*{0.5 cm}Verifica le seguenti condizioni:
+\begin{itemize}
+  \item $descrizione \neq$ ``''
+  \item $tipi\_operazione.length == prezzi.length$
+  \item $\forall tipoOperazione \in Tipo Operazione \implies \exists op \in tipi\_operazione \land op == tipoOperazione $
+\end{itemize}
+\textit{post}:
+\begin{enumerate}
+  \item Crea un nuovo Listino con la descrizione e fascia prezzo.
+  \item Per ogni \textit{tipo} in \textit{tipo\_operazione} crea una nuova relationship PrezzoListino tra il nuovo listino e \textit{tipo},
+    con importo uguale all'elemento di \textit{prezzi} con lo stesso indice.
+  \item Restituisci il nuovo Listino
+\end{enumerate}

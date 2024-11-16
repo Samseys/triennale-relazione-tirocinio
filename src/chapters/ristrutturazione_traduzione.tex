@@ -1,7 +1,7 @@
 \chapter{Ristrutturazione e traduzione dello schema}
 In questo capitolo procederemo alla preparazione dello schema per poi tradurlo direttamente in uno schema relazionale per PostgreSQL, specificando anche delle soluzioni per
 rispettare i vincoli esterni definiti.
-\section{Ristrutturazione dello schema ER}
+\section{Ristrutturazione dello schema Entity-Relationship}
 Procediamo alla ristrutturazione dello schema ER prima di tradurlo direttamente nello schema relazionale:
 \begin{itemize}
   \item Sostituiamo le relationship Molti a Molti, tipicamente introducendo una nuova tabella
@@ -13,20 +13,20 @@ Procediamo alla ristrutturazione dello schema ER prima di tradurlo direttamente 
 \begin{figure}[H]
   \centering
   \includegraphics[width=13cm]{images/db-diagrams/er-diagram-ristrutturato.png}
-  \caption{Schema Entit\`a Relazione tradotto}
+  \caption{Schema Entity-Relationship tradotto}
 \end{figure}
 
 \section{Traduzione dello schema ristrutturato}
 Traduciamo lo schema ristrutturato nello schema relazionale da inserire in PostgreSQL, con chiavi primarie e chiavi esterne.
 \\\\
-\textbf{Movimento(\underline{uuid}, importo, dataEsecuzione, descrizione, idWorkflow*, tipoOperazioneId, walletId) \\}
+\textbf{Movimento(\underline{uuid}, importo, dataEsecuzione, descrizione, idWorkflow*,\\ tipoOperazioneId, walletId) \\}
 \textbf{\hspace*{1.5 cm} foreign key: $ Movimento[tipoOperazioneId] \subseteq TipoOperazione[nome] $} \\
 \textbf{\hspace*{1.5 cm} foreign key: $ Movimento[walletId] \subseteq Wallet[id] $ }
 \\\\
-\textbf{TipoOperazione(\underline{nome}, servizioId, categoriaOperazione, costoReale, descrizione) \\}
-\textbf{\hspace*{1.5 cm} foreign key: $ TipoOperazione[servizioId] \subseteq Servizio[id] $}
+\textbf{TipoOperazione(\underline{nome}, servizio, categoriaOperazione, costoReale, \\descrizione) \\}
+\textbf{\hspace*{1.5 cm} foreign key: $ TipoOperazione[servizio] \subseteq Servizio[nome] $}
 \\\\
-\textbf{Servizio(\underline{id})}
+\textbf{Servizio(\underline{nome})}
 \\\\
 \textbf{Wallet(\underline{id}, saldo, tenantId) \\}
 \textbf{\hspace*{1.5 cm} key:} \textit{(tenantId)} \\
@@ -48,10 +48,11 @@ Traduciamo lo schema ristrutturato nello schema relazionale da inserire in Postg
 \end{figure}
 
 \section{Traduzione dei vincoli esterni}
-Visto che non sono stati aggiunti ulteriori vincoli esterni durante la ristrutturazione, occupiamoci dell'unico vincolo che \`e stato riconosciuto durante il la creazione dello
-schema concettuale:
+Visto che non sono stati aggiunti ulteriori vincoli esterni durante la ristrutturazione, occupiamoci dell'unico vincolo che \`e stato riconosciuto durante
+la creazione dello schema concettuale:
 \\\\
 \textbf{Tutti gli importi specificati (\ref{tuttiimporticoncept})} - Come vedremo nel prossimo capitolo \textbf{(\ref{designinserimentoprezzi})}, il vincolo verr\`a forzato dal form di creazione.
 
 \section {Tabelle pre-popolate}
-Visto che i tipi di operazione sono conosciuti a priori e da design non \`e possibile aggiungerne di nuovi tramite interfaccia, pre-popoleremo la relativa tabella.
+Ci sono due tabelle di cui conosciamo il contenuto a priori, e che non \`e possibile modificare da interfaccia: TipoOperazione e Servizio. Pertanto, inseriremo dei dati per popolarle
+durante l'inizializzazione del database.
