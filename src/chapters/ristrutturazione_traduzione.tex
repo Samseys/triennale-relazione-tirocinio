@@ -30,12 +30,12 @@ Traduciamo lo schema ristrutturato nello schema relazionale da inserire in Postg
 \\\\
 \textbf{Wallet(\underline{id}, saldo, tenantId) \\}
 \textbf{\hspace*{1.5 cm} key:} \textit{(tenantId)} \\
-\textbf{\hspace*{1.5 cm} foreign key: $ Wallet[tenantId] \subseteq Wallet[id] $}
+\textbf{\hspace*{1.5 cm} foreign key: $ Wallet[tenantId] \subseteq Tenant[id] $}
 \\\\
 \textbf{Tenant(\underline{id}, listinoId) \\}
 \textbf{\hspace*{1.5 cm} foreign key: $ Tenant[listinoId] \subseteq Listino[id] $}
 \\\\
-\textbf{Listino(\underline{id}, descrizione, fasciaPrezzo) \\}
+\textbf{Listino(\underline{id}, descrizione, fasciaPrezzo)}
 \\\\
 \textbf{PrezzoListino(\underline{tipoOperazioneId}, \underline{listinoId}, importo) \\}
 \textbf{\hspace*{1.5 cm} foreign key: $ PrezzoListino[tipoOperazioneId] \subseteq TipoOperazione[nome] $} \\

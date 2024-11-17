@@ -135,6 +135,19 @@ L'utilizzo di Stripe rispetto ai competitor ha diversi vantaggi:
   \item \textbf{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay e Apple Pay.
   \item \textbf{Documentazione estensiva} - La documentazione \`e molto completa e dettagliata, inoltre \`e piena di esempi di integrazione in diversi linguaggi.
 \end{itemize}
+\subsection{Redis}
+Redis \`e un sistema di cache ``in-memory'', conosciuto per le sue elevate performance e bassa latenza.
+\`E stato scelto per la sua facilit\`a di integrazione grazie a SpringBoot Data Redis.\\
+Tra i suoi punti di forza troviamo:
+\begin{itemize}
+  \item \textbf{Aumento delle performance dell'applicativo} - Utilizzare redis come sistema di cache distribuito permette di ridurre il carico sui vari componenti,
+    dato che se un'operazione richiesta \`e in cache il sistema pu\`o rispondere direttamente.
+  \item \textbf{Scalabilit\`a} - Redis supporta la replication secondo un modello master-replica. In caso di guasto dell'istanza master una delle repliche
+    viene promossa. Questo si traduce in una maggiore resistenza ai guasti pi\`u e capacit\`a in lettura pi\`u elevata.
+    Inoltre, grazie a Redis Cluster \`e possibile dividere i dati su pi\`u nodi, dividendo anche il carico in scrittura. Il contro di questa soluzione \`e che non garantisce
+    una forte consistenza, in quanto Redis risponde prima di propagare la risposta su altri nodi per evitare penalit\`a di latenza.
+\end{itemize}
+
 \subsection{Docker}
 Docker\footnote{Questa sezione utilizza informazioni e immagini tratte dalla documentazione ufficiale di Docker\cite{dockerdocs}}
 \`e uno dei software pi\`u popolari in ambito aziendale e non, per la sua capacit\`a di creare dei container dove vengono eseguite le applicazioni in maniera isolata.
