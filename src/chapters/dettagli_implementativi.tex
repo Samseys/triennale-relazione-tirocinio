@@ -1,5 +1,8 @@
 \chapter{Dettagli implementativi}
-In questa sezione vedremo i dettagli implementativi di alcune parti pi\`u significative o complesse del sistema.
+In questa sezione verranno illustrati i dettagli implementativi delle parti più significative del sistema, con particolare attenzione a come strumenti
+e tecnologie specifiche sono stati utilizzati per soddisfare i requisiti del progetto. Verranno esplorati in dettaglio il ruolo del Credit Manager all'interno di Sentinel
+focalizzandoci sull'implementazione di RabbitMQ, l'integrazione con Stripe per le funzionalità di ricarica del wallet associato al tenant, e l'implementazione delle feature del
+SignalStore di NgRx per gestire in modo efficiente uno stato con chiamate al backend.
 
 \section{RabbitMQ}
 All'interno dell'architettura event-driven di Sentinel, il Credit Manager ha il ruolo di consumer.
@@ -7,9 +10,9 @@ Sono presenti tre Topic Exchange:
 \begin{itemize}
   \item \textbf{work-exchange} - L'exchange dove vengono inviati i messaggi normalmente.
   \item \textbf{retry-exchange} - L'exchange dove vengono inviati i messaggi che hanno superato il numero massimo di retry nel work-exchange.
-    Su questi messaggi viene applicato un exponential backoff, e se superano il numero massimo di retry anche qui vengono inviati nell'error-exchange. I messaggi in questo
+    Su questi messaggi viene applicato un exponential backoff, e se superano il numero massimo di retry vengono inviati nell'error-exchange. I messaggi in questo
     exchange hanno un TTL di 12000 (12 secondi).
-  \item \textbf{error-exchange}- L'exchange dove vengono inviati i messaggi che hanno restituito un errore irrecuperabile o che hanno superato il numero massimo di retry.
+  \item \textbf{error-exchange} - L'exchange dove vengono inviati i messaggi che hanno restituito un errore irrecuperabile o che hanno superato il numero massimo di retry.
 \end{itemize}
 \textbf{}\\
 Il Credit Manager sta in ascolto sulla coda con topic ``\#.event.payment.\#'' del work-exchange, e riceve messaggi con il seguente formato:
@@ -28,14 +31,13 @@ Di seguito la spiegazione della funzione di ogni campo:
     di operazioni duplicate.
   \item \textbf{paymentOperationType} - Contiene il Tipo Operazione, equivalente a quello salvato nel database. Viene utilizzato per recuperare il costo da addebitare
     al tenant dal listino prezzi associato.
-  \item \textbf{costFeedback} - \`E il costo reale affrontato durante l'interrogazione alla banca dati esterna. Viene registrato in caso sia differente dal costo reale
+  \item \textbf{costFeedback} - \`E il costo effetivo affrontato durante l'interrogazione alla banca dati esterna. Viene registrato in caso sia differente dal costo reale associato al TipoOperazione.
   \item \textbf{workflowId} - \`E l'id del workflow, e viene utilizzato da alcuni endpoint per restituire statistiche come il totale speso in un determinato workflow.
 \end{itemize}
 Quando il Credit Manager riceve un messaggio sulla sua coda, registra il movimento nella tabella Movimento del database.
 
 \section{Stripe}
-Per l'implementazione di Stripe, \`e stato deciso di utilizzare il Checkout di Stripe con pagina self-hosted, in modo da integrare la pagina di Stripe all'interno
-dell'applicativo. Un pagamento segue un flusso ben preciso:
+Per la gestione dei pagamenti \`e stato deciso di utilizzare il Checkout di Stripe con pagina self-hosted, in modo da integrarla all'interno dell'applicativo. Un pagamento segue un flusso ben preciso:
 \begin{figure}[H]
   \centering
   \includegraphics[width=14cm]{images/stripe-pagamento-diagramma.png}
@@ -47,56 +49,48 @@ dell'applicativo. Un pagamento segue un flusso ben preciso:
   \item L'utente inserisce un importo maggiore di 5 euro da ricaricare e conferma.
   \item Il frontend invia l'importo con una chiave di idempotenza generata tramite UUID.
   \item Il backend verifica che la richiesta non sia gi\`a stata eseguita confrontandolo con la cache salvata su Redis, e nel caso invia al frontend la risposta precedente. In caso negativo invia a Stripe una richiesta di
-    creazione del checkout con la stessa chiave di idempotenza inviata dal backend.
-  \item Stripe risponde al backend con l'id del Checkout e un Client Secret necessario per creare il Checkout.
+    creazione del checkout con la stessa chiave di idempotenza inviata dal frontend.
+  \item Stripe risponde al backend con l'id del Checkout e un Client Secret necessario per la creazione della pagina di pagamento.
   \item Il backend risponde al frontend con le informazioni inviate da Stripe.
   \item Il frontend mostra il Checkout all'utente, utilizzando i dati inviati da Stripe.
-  \item L'utente inserisce i dati di pagamento e li invia a Stripe attraverso l'elemento hostato da Stripe.
-  \item Stripe invia l'esito sia al backend che al frontend. Nel caso del backend, l'esito viene inviato ad un webhook che si occupa di registrare correttamente l'avvenuto
+  \item L'utente inserisce i dati di pagamento e li invia attraverso l'elemento hostato da Stripe.
+  \item Stripe invia l'esito sia al backend che al frontend. Nel caso del backend, l'esito viene inviato a un webhook che si occupa di registrare correttamente l'avvenuto
     pagamento. In caso il backend non restituisca il codice HTTP 200 OK, Stripe riprover\`a fino a tre giorni seguendo una strategia di Exponential Backoff.
 \end{enumerate}
 \textbf{}\\
 Il webhook ha il compito di verificare che i messaggi siano realmente provenienti da Stripe, confrontando la signature ricevuta nell'header ``Stripe-Signature'' con la
-chiave ricevuta da Stripe durante la configurazione.
+chiave ricevuta durante la configurazione del webhook.
 
 \section{SignalStore di NgRx}
-Nel corso del tirocinio, l'azienda ha preso una decisione importante: ricostruire completamente il frontend a partire da una base diversa, utilizzando l'ultima
-versione di Angular (Angular 17). Per questo fine, \`e stato deciso di rivedere il pattern di comunicazione tra componenti. In precedenza veniva utilizzato \textbf{NgRx}, un
-progetto che porta il pattern Redux su Angular.
+Nel corso del tirocinio \`e stata presa la decisione di ricostruire il frontend a partire da una base diversa, utilizzando l'ultima versione di Angular (Angular 17).
+A tale scopo \`e stato deciso di sostituire di rivedere il pattern di comunicazione tra componenti, sostituendo \textbf{NgRx} con il \textbf{SignalStore} di NgRx.
+Il primo \`e un progetto che porta il pattern Redux su Angular, mentre il secondo \`e una soluzione basata interamente sui Signal, feature di Angular uscita dalla
+Developer Preview proprio con la versione 17.
 
-Viene quindi scelto di scommettere sul \textbf{SignalStore di NgRx}, interamente basato sui Signal usciti dalla Developer Preview proprio con la versione 17 di Angular.
-
-Durante il tirocinio mi sono quindi occupato anche di implementare una soluzione flessibile che utilizzi al meglio il SignalStore.
-\`E stato necessario implementare quelle che NgRx chiama \textbf{feature}, sfruttando al 100\% tutte le funzionalit\`a di TypeScript per evitare di compromettere la Type Safety.
+\`E stato quindi necessario implementare una soluzione flessibile che utilizzi al meglio il SignalStore, utilizzando quelle che vengono chiamate \textbf{feature}.
 Viene fatto uso di Generics, Mapped Types, Function Overloading, e viene in generale sfruttata la capacit\`a di inferenza sui tipi di TypeScript.
-Le feature implementate offrono la possibilit\`a di effettuare operazioni \textbf{CRUD} (Create, Read, Update, Delete), ma rimuovono la necessit\`a di scrivere molto boilerplate e offrono funzionalit\`a aggiuntive.
+Le feature implementate offrono la possibilit\`a di effettuare operazioni \textbf{CRUD} (Create, Read, Update, Delete), rimuovendo la necessit\`a di scrivere molto boilerplate e offrendo
+funzionalit\`a aggiuntive ed estendibili.
 \\\\
 Ne sono state implementate tre:
 \begin{itemize}
   \item \textbf{withItem}: Si occupa di effettuare operazioni CRUD su un singolo oggetto appartenente a una collezione.
   \item \textbf{withList}: Si occupa di effettuare operazioni CRUD su una collezione.
   \item \textbf{withGrid}: Si occupa di gestire lo stato necessario per un componente generico che mostra una Tabella. Permette inoltre di effettuare operazioni CRUD sulle righe
-    della tabella.
+    della tabella stessa.
 \end{itemize}
 
 Prenderemo in esame withGrid, la pi\`u complessa.
 \\
-\begin{lstlisting}
-export const Store = signalStore(
-    withGrid({
-        collection: 'nomeCollezione',
-        service: StoreService,
-        paginationType: 'none',
-        idField: 'id',
-        defaultSorting: { dir: 'asc', field: 'createdTime' },
-        usedInputs: ['form', 'routeParams', 'queryParams'],
-    })
-)
-\end{lstlisting}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm]{images/code-store.png}
+  \caption{Codice per creare uno Store con withGrid}
+\end{figure}
 \textbf{}\\
 Questo \`e il codice richiesto per creare uno Store che include withGrid. La feature prende in input diversi parametri:
 \begin{itemize}
-  \item \textbf{collection} - Il nome su cui verranno basati i nomi delle funzioni CRUD e dello stato.
+  \item \textbf{collection} - La stringa su cui verranno basati i nomi delle funzioni CRUD e dello stato.
   \item \textbf{service} - Oggetto che contiene i metodi che comunicano con il backend. Restituiscono
     l'\textbf{Observable}\footnote{Un Observable \`e la base della reattivit\`a fornita da RxJs: \`e una sorgente di dati che vengono emessi nel tempo.
       Il flusso pu\`o essere manipolato appendendo degli operatori che modificano il dato ad ogni passo. I pi\`u comuni sono map e filter.
@@ -107,7 +101,7 @@ Questo \`e il codice richiesto per creare uno Store che include withGrid. La fea
     generare tutte le funzioni che poi verranno chiamate dalla feature.
   \item \textbf{paginationType} - Il tipo di paginazione utilizzato. Ha tre possibili valori: \textbf{none}, \textbf{blocks}, \textbf{pages}. Questo perch\`e lo store
     gestisce anche la paginazione per il componente generico, e si deve comportare in maniera diversa a seconda del tipo. Per blocks, la paginazione e il sorting
-    vengono gestiti dal backend, che prende in input anche la dimensione del block e il numero di blocco. Nel caso di pages, invece, la paginazione \`e interamente gestita
+    vengono gestiti dal backend, che prende in input anche la dimensione e il numero del blocco. Nel caso di pages invece, la paginazione \`e interamente gestita
     dalla feature e dal componente generico. Se il valore di paginationType \`e none viene disabilitata la paginazione.
   \item \textbf{idField} - Nome del campo ID dell'oggetto che la grid sta trattando. Il valore di questo campo deve essere necessariamente univoco negli oggetti inseriti,
     in quanto necessario per il corretto funzionamento della feature e del componente generico (per esempio, viene utilizzato nel track del @for di Angular).
@@ -119,3 +113,23 @@ Questo \`e il codice richiesto per creare uno Store che include withGrid. La fea
 \textbf{}\\
 La feature mette a disposizione diverse funzioni e valori: tutte le tipiche funzioni CRUD, una funzione per effettuare il reload della grid con gli ultimi input passati,
 e lo stato dell'ultima chiamata effettuata (Loading, Loaded, Error, o Init se non \`e stata effettuata nessuna chiamata dalla creazione dello store).
+\\\\
+Prendiamo ora come esempio il codice necessario per definire un service per withGrid:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm]{images/code-service.png}
+  \caption{Codice del servizio con le chiamate al backend}
+\end{figure}
+Come mostrato dal codice in figura, \`e necessario passare diverse informazioni al tipo GridService per permettere a TypeScript di effettuare tutte le inferenze sui tipi:
+\\\\
+\begin{itemize}
+  \item \textbf{Tipo dell'Entit\`a} - Tipo dell'oggetto popolato nello stato. Viene utilizzato da TypeScript per le inferenze all'interno del Signalstore e
+    per l'autocompletamento delle funzioni del Service stesso.
+  \item \textbf{Nome del campo ID} - Nome del campo ID, uguale a quello specificato sopra. L'uguaglianza viene forzata dal typing system.
+  \item \textbf{Tipo di paginazione} - Stesso tipo di paginazione specificato sopra. L'uguaglianza viene forzata dal typing system.
+  \item \textbf{RouteParams} - Campo per specificare RouteParams obbligatori utilizzati per la costruzione degli URL nelle funzioni.
+  \item \textbf{Form} - Dato che tipicamente questa feature viene utilizzata per tabelle con filtri, \`e necessario includere un body con i parametri per effettuare la ricerca.
+  \item \textbf{QueryParams} - Campo per i QueryParams opzionali utilizzati nelle funzioni.
+  \item \textbf{FormCreate} - Form utilizzato dalla funzione addToGrid.
+  \item \textbf{FormUpdate} - Form utilizzato dalla funzione updateItemInGrid.
+\end{itemize}

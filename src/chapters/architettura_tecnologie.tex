@@ -140,10 +140,10 @@ Redis \`e un sistema di cache ``in-memory'', conosciuto per le sue elevate perfo
 \`E stato scelto per la sua facilit\`a di integrazione grazie a SpringBoot Data Redis.\\
 Tra i suoi punti di forza troviamo:
 \begin{itemize}
-  \item \textbf{Aumento delle performance dell'applicativo} - Utilizzare redis come sistema di cache distribuito permette di ridurre il carico sui vari componenti,
+  \item \textbf{Aumento delle performance dell'applicativo} - Utilizzare Redis come sistema di cache distribuito permette di ridurre il carico sui vari componenti,
     dato che se un'operazione richiesta \`e in cache il sistema pu\`o rispondere direttamente.
   \item \textbf{Scalabilit\`a} - Redis supporta la replication secondo un modello master-replica. In caso di guasto dell'istanza master una delle repliche
-    viene promossa. Questo si traduce in una maggiore resistenza ai guasti pi\`u e capacit\`a in lettura pi\`u elevata.
+    viene promossa. Questo si traduce in una maggiore resistenza ai guasti e capacit\`a in lettura pi\`u elevata.
     Inoltre, grazie a Redis Cluster \`e possibile dividere i dati su pi\`u nodi, dividendo anche il carico in scrittura. Il contro di questa soluzione \`e che non garantisce
     una forte consistenza, in quanto Redis risponde prima di propagare la risposta su altri nodi per evitare penalit\`a di latenza.
 \end{itemize}
