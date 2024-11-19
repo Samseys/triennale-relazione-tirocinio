@@ -82,7 +82,7 @@ Non sono presenti neanche le chiavi primarie normalmente richieste in un vero da
 \end{table}
 
 \subsection{Vincoli Esterni}
-Dalla costruzione dello schema concettuale, \`e emersa la necessità di rappresentare il seguente vincolo esterno:\\\\
+Dalla costruzione dello schema concettuale, \`e emersa la necessità di rappresentare il seguente vincolo esterno:\\
 \textbf{\label{tuttiimporticoncept}Tutti gli importi specificati} - Esiste una relationship Prezzo Listino tra ogni entit\`a Listino e ogni entit\`a Tipo Operazione
 
 \section{Casi d'uso}
@@ -94,8 +94,9 @@ un caso d'uso rappresentativo all'interno dell'applicativo e che coinvolge le fu
   \caption{Schema UML dei casi d'uso}
 \end{figure}
 
-\textbf{crea\_listino(descrizione: Stringa, fascia\_prezzo: \{ALTA, MEDIA,\\BASSA\}, tipi\_operazione: [TipoOperazione], prezzi: [Numeric]) $\implies$ Listino:}\\\\
-\textit{pre}:\\\\
+\textbf{crea\_listino(descrizione: Stringa, fascia\_prezzo: \{ALTA, MEDIA,\\BASSA\}, tipi\_operazione: [TipoOperazione], prezzi: [Numeric]) $\implies$ Listino:}
+
+\textit{pre}:\\
 \hspace*{0.5 cm}Verifica le seguenti condizioni:
 \begin{itemize}
   \item $descrizione \neq$ ``''

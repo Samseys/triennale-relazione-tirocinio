@@ -18,7 +18,7 @@ Procediamo alla ristrutturazione dello schema ER prima di tradurlo direttamente 
 
 \section{Traduzione dello schema ristrutturato}
 Traduciamo lo schema ristrutturato nello schema relazionale da inserire in PostgreSQL, con chiavi primarie e chiavi esterne.
-\\\\
+
 \textbf{Movimento(\underline{uuid}, importo, dataEsecuzione, descrizione, idWorkflow*,\\ tipoOperazioneId, walletId) \\}
 \textbf{\hspace*{1.5 cm} foreign key: $ Movimento[tipoOperazioneId] \subseteq TipoOperazione[nome] $} \\
 \textbf{\hspace*{1.5 cm} foreign key: $ Movimento[walletId] \subseteq Wallet[id] $ }
