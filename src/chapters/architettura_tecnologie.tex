@@ -65,7 +65,7 @@ Rabbit ha diversi punti di forza, alcuni intrinsechi del tipo di software di cui
         \textbf{Acknowledgements} -  Una conferma da parte del consumer che tutto sia andato a buon fine.
         Se il consumer non invia l'ack, Rabbit terr\`a il messaggio all'interno della coda o lo invier\`a a un altro consumer.
       \item \textbf{TTL (Time-to-Live) per messaggi e code} - \`E possibile impostare un limite di tempo che un messaggio pu\`o rimanere
-        in una queue, dopo il quale vengono automaticamente scartati o vengono spostati su un DLX, riducendo il rischio che si
+        in una queue, dopo il quale vengono automaticamente scartati o vengono spostati su un Dead-letter Exchange, riducendo il rischio che si
         possano accumulare messaggi causando problemi di risorse esaurite o code sovraccariche.
       \item \textbf{DLX (Dead-letter Exchange)} - Sono normali exchange su cui vengono inviati i messaggi \textbf{``dead-lettered''}: messaggi che hanno
         ricevuto un nack (\textbf{negative acknowledgement}), messaggi che hanno superato il TTL definito per messaggio, messaggi
@@ -135,7 +135,7 @@ L'utilizzo di Stripe rispetto ai competitor ha diversi vantaggi:
 \begin{itemize}
   \item \textbf{Facilit\`a di integrazione} - Il processo di integrazione all'interno di un applicativo \`e semplice, e offre molte opzioni di configurazione e servizi.
     A seconda delle esigenze, \`e possibile passare da una configurazione predefinita con zero o comunque pochissimo codice a un'esperienza completamente personalizzata dallo sviluppatore.
-  \item \textbf{Sicurezza} - Stripe semplifica l'oneroso lavoro di integrare di un sistema di pagamenti che rispetta gli standard PCI DSS, essendo tutto gestito
+  \item \textbf{Sicurezza} - Stripe semplifica l'oneroso lavoro di integrare un sistema di pagamenti che rispetti gli standard PCI DSS, essendo tutto gestito
     direttamente con redirect a Stripe o attraverso elementi integrati nell'applicazione ma hostati sui loro server. Non c'\`e quindi bisogno di trattare e memorizzare dati
     riguardanti i metodi di pagamento, evitando tutte le complicazioni che ne conseguono.
   \item \textbf{Supporto a molti metodi di pagamento} - Stripe supporta tutti i maggiori circuiti di pagamento, bonifici, o anche wallets digitali come Google Pay e Apple Pay.

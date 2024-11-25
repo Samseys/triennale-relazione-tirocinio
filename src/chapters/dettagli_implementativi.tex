@@ -1,8 +1,81 @@
 \chapter{Dettagli implementativi}
-In questa sezione verranno illustrati i dettagli implementativi delle parti pi\`u significative del sistema, con particolare attenzione a come strumenti
+In questo capitolo verranno illustrati i dettagli implementativi delle parti pi\`u significative del sistema, con particolare attenzione a come strumenti
 e tecnologie specifiche sono stati utilizzati per soddisfare i requisiti del progetto. Verranno esplorati in dettaglio il ruolo del Credit Manager all'interno di Sentinel
-focalizzandoci sull'implementazione di RabbitMQ, l'integrazione con Stripe per le funzionalità di ricarica del wallet associato al tenant, e l'implementazione delle feature del
+focalizzandoci sull'implementazione di RabbitMQ, l'integrazione con Stripe per le funzionalit\`a di ricarica del wallet associato al tenant, e l'implementazione delle feature del
 SignalStore di NgRx per gestire in modo efficiente uno stato con chiamate al backend.
+
+\section{Implementazione dello use-case Crea Listino\label{crealistinosection}}
+In questa sezione verr\`a descritta l'implementazione dello use-case Crea Listino analizzato durante la progettazione concettuale, fornendo anche immagini e snippet di codice.
+
+Per creare un listino prezzi, l'amministratore deve compilare il form in \textbf{Figura \ref{createlistinoform}}:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=13cm]{images/gestione-listini/screen/add-listino.png}
+  \caption{Pagina di creazione di un Listino Prezzi.}
+  \label{createlistinoform}
+\end{figure}
+
+Per aggiungere un prezzo \`e possibile cliccare sul relativo bottone, che aprir\`a la schermata in \textbf{Figura \ref{addpricemodal}}:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=13cm]{images/gestione-listini/screen/add-prezzo-modal.png}
+  \caption{Modale per inserire un prezzo.}
+  \label{addpricemodal}
+\end{figure}
+
+Dopo aver compilato i campi obbligatori del form e aver inserito un prezzo per tutte le operazioni, viene sbloccato il
+tasto Salva, che invia una richiesta a questo endpoint del Credit Manager:
+
+\subsubsection{PUT - /listino}
+\begin{lstlisting}[language=Java, breaklines=true]
+@PutMapping("listino")
+//Controllo dei permessi generalizzato da un'annotazione.
+@RfguiAuthorization(permissionId = CreditManagerConstants.WALLET_LISTINO_PREZZI_MENU_PERMISSION, writePerm = true)
+public ResponseEntity<GenericResponse> createListino(HttpServletRequest req, @RequestBody CreateListinoForm form) {
+  GenericResponse response = new GenericResponse();
+  HttpStatus status = HttpStatus.OK;
+  //Controlla che siano presenti tutti i campi obbligatori
+  if (CreateListinoForm.validate(form)) {
+    List<TipoOperazione> tipoOperazioneList = tipoOperazioneService.findAllExceptSentinel();
+    //Controlla se ci sono tutte le operazioni. In caso negativo lancia errore, annullando la transaction
+    if (!new HashSet<>(form.getPrezziListino().stream().map(PrezzoListinoForm::getTipoOperazioneId).toList()).containsAll(
+            tipoOperazioneList.stream().map(TipoOperazione::getId).toList()))
+        throw new InvalidFormException(HttpStatus.BAD_REQUEST, CreditManagerConstants.ERROR_INVALID_FORM);
+    //Crea il listino
+    Listino listino = listinoService.addListino(form.getDescrizione(), form.getFasciaPrezzo());
+    //Crea un nuovo Prezzo Listino per ogni importo
+    form.getPrezziListino().forEach(prezzoListino -> {
+        prezzoListinoService.saveImportoForListino(prezzoListino.getTipoOperazioneId(), listino, Money.of(prezzoListino.getImporto(), "EUR"));
+    });
+    //Utilizza MapStruct per convertire l'entità
+    response.setEntity(listinoMapper.toDTO(listino));
+  } else {
+    throw new InvalidFormException(HttpStatus.BAD_REQUEST, CreditManagerConstants.ERROR_INVALID_FORM);
+  }
+  //Se tutto è andato a buon fine, risponde al frontend col nuovo listino.
+  //Termina inoltre la transaction, salvando sul database i nuovi dati.
+  return ResponseEntity.status(status).body(response);
+}
+\end{lstlisting}
+\subsubsection{Body della richiesta}
+L'endpoint accetta come body oggetti definiti dalla seguente classe:
+
+\begin{lstlisting}[language=Java, breaklines=true]
+@Getter
+@Setter
+public class CreateListinoForm {
+  private String descrizione;
+  private FasciaPrezzoEnum fasciaPrezzo;
+  private List<PrezzoListinoForm> prezziListino;
+
+  public static boolean validate(CreateListinoForm form) {
+    return form.getFasciaPrezzo() != null && form.getPrezziListino() != null;
+  }
+}
+\end{lstlisting}
+
+Come si può vedere dagli snippet di codice, anche il backend effettua un controllo per la presenza di un importo per ogni tipo operazione, garantendo che il vincolo esterno rimasto
+dal passo di traduzione (\textbf{\ref{tuttiimportitraduzione}}) venga rispettato.
 
 \section{RabbitMQ}
 All'interno dell'architettura event-driven di Sentinel, il Credit Manager ha il ruolo di consumer.
@@ -16,7 +89,6 @@ Sono presenti tre Topic Exchange:
 \end{itemize}
 
 Il Credit Manager sta in ascolto sulla coda con topic ``\#.event.payment.\#'' del work-exchange, e riceve messaggi con il seguente formato:
-
 \begin{lstlisting}[language=Java]
 public class PaymentMessage {
   private UUID idempotencyKey;
@@ -44,7 +116,6 @@ Per la gestione dei pagamenti \`e stato deciso di utilizzare il Checkout di Stri
   \caption{Diagramma di sequenza di un pagamento con Stripe}
   \label{stripepayment}
 \end{figure}
-\newpage
 \begin{enumerate}
   \item L'utente inserisce un importo maggiore di 5 euro da ricaricare e conferma.
   \item Il frontend invia l'importo con una chiave di idempotenza generata tramite UUID.
@@ -72,7 +143,6 @@ Viene fatto uso di Generics, Mapped Types, Function Overloading, e viene in gene
 
 Le feature implementate offrono la possibilit\`a di effettuare operazioni \textbf{CRUD} (Create, Read, Update, Delete), rimuovendo la necessit\`a di scrivere molto boilerplate e offrendo
 funzionalit\`a aggiuntive ed estendibili.
-\newpage
 Ne sono state implementate tre:
 \begin{itemize}
   \item \textbf{withItem}: Si occupa di effettuare operazioni CRUD su un singolo oggetto appartenente a una collezione.
@@ -121,7 +191,6 @@ Prendiamo ora come esempio il codice necessario per definire un service per with
   \includegraphics[width=12cm]{images/code-service.png}
   \caption{Codice del servizio con le chiamate al backend}
 \end{figure}
-\newpage
 Come mostrato dal codice in figura, \`e necessario passare diverse informazioni al tipo GridService per permettere a TypeScript di effettuare tutte le inferenze sui tipi:
 \begin{itemize}
   \item \textbf{Tipo dell'Entit\`a} - Tipo dell'oggetto popolato nello stato. Viene utilizzato da TypeScript per le inferenze all'interno del Signalstore e
